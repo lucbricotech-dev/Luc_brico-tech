@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luc Brico-Tech — Gestion d'entreprise</title>
+<style>
+:root{--primary:#123b5d;--secondary:#1e6f9f;--accent:#f39c12;--bg:#f4f7fa;--card:#fff;--text:#1f2937;--muted:#6b7280;--success:#159957;--danger:#c0392b;--border:#e5e7eb}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--primary);color:white;padding:22px 15px;position:fixed;inset:0 auto 0 0;z-index:10}
+.logo{font-size:22px;font-weight:800;padding:10px 12px 28px}.logo span{color:#f6b73c}
+.nav button{width:100%;border:0;background:transparent;color:#dbe8f1;text-align:left;padding:13px 14px;margin:3px 0;border-radius:9px;cursor:pointer;font-size:14px}.nav button:hover,.nav button.active{background:#1d587e;color:white}
+.main{margin-left:250px;width:calc(100% - 250px);padding:24px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:25px}.date{color:var(--muted);font-size:13px}
+.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 2px 8px #00000008}.kpi-label{font-size:13px;color:var(--muted)}.kpi{font-size:25px;font-weight:800;margin:8px 0}.trend{font-size:12px;color:var(--success)}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px}.panel h3{margin:0 0 15px;font-size:17px}
+.chart{height:260px;display:flex;align-items:end;gap:12px;padding:15px 5px;border-bottom:1px solid var(--border)}.bar-wrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}.bar{width:70%;min-height:3px;background:var(--secondary);border-radius:6px 6px 0 0}.bar-label{font-size:11px;color:var(--muted)}.bar-value{font-size:10px}
+form{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.full{grid-column:1/-1}label{font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px}input,select,textarea{width:100%;padding:11px;border:1px solid #d7dde4;border-radius:8px;background:white;font:inherit}textarea{min-height:80px;resize:vertical}.actions{display:flex;gap:10px;justify-content:flex-end}.btn{border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-weight:700}.primary{background:var(--primary);color:white}.orange{background:var(--accent);color:white}.light{background:#edf2f7;color:#374151}.danger{background:#fff0ee;color:var(--danger)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left}th{color:var(--muted);font-size:12px;background:#f8fafc}.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700}.done{background:#e8f7ef;color:var(--success)}.pending{background:#fff4df;color:#a86300}.late{background:#fdebea;color:var(--danger)}
+.progress{height:8px;background:#edf0f2;border-radius:8px;overflow:hidden}.progress i{display:block;height:100%;background:var(--secondary)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.filters input,.filters select{max-width:220px}.empty{text-align:center;color:var(--muted);padding:30px}
+@media(max-width:950px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px)}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%;padding:14px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}form{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start}.top h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">Luc <span>Brico-Tech</span></div>
+  <div class="nav">
+    <button class="active" onclick="showPage('dashboard',this)">▦ Tableau de bord</button>
+    <button onclick="showPage('sales',this)">▤ Ventes</button>
+    <button onclick="showPage('purchases',this)">▥ Achats</button>
+    <button onclick="showPage('innovation',this)">◆ Innovation</button>
+    <button onclick="showPage('activities',this)">✓ Activités</button>
+    <button onclick="showPage('reports',this)">◫ Rapports</button>
+    <button onclick="showPage('settings',this)">⚙ Paramètres</button>
+  </div>
+</aside>
+
+<main class="main">
+<header class="top"><div><h1 id="pageTitle">Tableau de bord</h1><div class="date" id="today"></div></div><button class="btn orange" onclick="exportCSV()">Exporter les données</button></header>
+
+<section id="dashboard" class="page active">
+<div class="cards">
+<div class="card"><div class="kpi-label">Chiffre d'affaires</div><div class="kpi" id="kca">0 FCFA</div><div class="trend">Ventes enregistrées</div></div>
+<div class="card"><div class="kpi-label">Achats</div><div class="kpi" id="kach">0 FCFA</div><div class="trend">Dépenses d'approvisionnement</div></div>
+<div class="card"><div class="kpi-label">Résultat brut simplifié</div><div class="kpi" id="kres">0 FCFA</div><div class="trend">CA − achats</div></div>
+<div class="card"><div class="kpi-label">Taux global d'activité</div><div class="kpi" id="kglobal">0%</div><div class="trend">Indicateur de suivi</div></div>
+</div>
+<div class="cards">
+<div class="card"><div class="kpi-label">Objectif ventes</div><div class="kpi" id="ktarget">0 FCFA</div></div>
+<div class="card"><div class="kpi-label">Taux réalisation ventes</div><div class="kpi" id="ksalesrate">0%</div></div>
+<div class="card"><div class="kpi-label">Innovation</div><div class="kpi" id="kinnovation">0%</div></div>
+<div class="card"><div class="kpi-label">Activités</div><div class="kpi" id="kactivity">0%</div></div>
+</div>
+<div class="grid">
+<div class="panel"><h3>Évolution mensuelle des ventes</h3><div class="chart" id="chart"></div></div>
+<div class="panel"><h3>Alertes de gestion</h3><div id="alerts" class="empty">Aucune alerte.</div></div>
+</div>
+</section>
+
+<section id="sales" class="page">
+<div class="panel"><h3>Enregistrer une vente</h3><form onsubmit="addSale(event)">
+<label>Date<input id="sdate" type="date" required></label>
+<label>Client<input id="sclient" required placeholder="Nom du client"></label>
+<label>Produit / service<input id="sproduct" required></label>
+<label>Montant (FCFA)<input id="samount" type="number" min="0" required></label>
+<label>Catégorie<select id="scat"><option>Produit</option><option>Service</option><option>Installation</option><option>Maintenance</option></select></label>
+<label>Statut<select id="sstatus"><option>Payée</option><option>En attente</option></select></label>
+<div class="full actions"><button class="btn primary">Ajouter la vente</button></div></form></div>
+<div class="panel"><h3>Historique des ventes</h3><div class="filters"><input id="salesSearch" placeholder="Rechercher..." oninput="renderSales()"></div><div id="salesTable"></div></div>
+</section>
+
+<section id="purchases" class="page">
+<div class="panel"><h3>Enregistrer un achat</h3><form onsubmit="addPurchase(event)">
+<label>Date<input id="pdate" type="date" required></label>
+<label>Fournisseur<input id="psupplier" required></label>
+<label>Article / service<input id="pitem" required></label>
+<label>Montant (FCFA)<input id="pamount" type="number" min="0" required></label>
+<label>Catégorie<select id="pcat"><option>Matière première</option><option>Matériel</option><option>Service</option><option>Transport</option><option>Autre</option></select></label>
+<label>Statut<select id="pstatus"><option>Payé</option><option>À payer</option></select></label>
+<div class="full actions"><button class="btn primary">Ajouter l'achat</button></div></form></div>
+<div class="panel"><h3>Historique des achats</h3><div id="purchaseTable"></div></div>
+</section>
+
+<section id="innovation" class="page">
+<div class="panel"><h3>Suivi des projets d'innovation</h3><form onsubmit="addInnovation(event)">
+<label>Projet<input id="iproject" required placeholder="Nom du projet"></label>
+<label>Responsable<input id="iowner" required></label>
+<label>Objectif<input id="igoal" required></label>
+<label>Progression (%)<input id="iprogress" type="number" min="0" max="100" required></label>
+<label>Date prévue<input id="idate" type="date"></label>
+<label>Statut<select id="istatus"><option>En cours</option><option>Planifié</option><option>Terminé</option><option>Bloqué</option></select></label>
+<div class="full"><label>Commentaire<textarea id="icomment"></textarea></label></div>
+<div class="full actions"><button class="btn primary">Ajouter le projet</button></div></form></div>
+<div class="panel"><h3>Portefeuille d'innovation</h3><div id="innovationTable"></div></div>
+</section>
+
+<section id="activities" class="page">
+<div class="panel"><h3>Planification et suivi des activités</h3><form onsubmit="addActivity(event)">
+<label>Activité<input id="aname" required></label>
+<label>Responsable<input id="aowner" required></label>
+<label>Objectif<input id="aobjective" required></label>
+<label>Progression (%)<input id="aprogress" type="number" min="0" max="100" required></label>
+<label>Échéance<input id="adate" type="date"></label>
+<label>Priorité<select id="apriority"><option>Normale</option><option>Haute</option><option>Urgente</option></select></label>
+<div class="full"><label>Commentaire<textarea id="acomment"></textarea></label></div>
+<div class="full actions"><button class="btn primary">Ajouter l'activité</button></div></form></div>
+<div class="panel"><h3>Activités de l'entreprise</h3><div id="activityTable"></div></div>
+</section>
+
+<section id="reports" class="page">
+<div class="panel"><h3>Rapport de performance</h3><div id="report"></div><button class="btn primary" onclick="window.print()">Imprimer / PDF</button></div>
+</section>
+
+<section id="settings" class="page">
+<div class="panel"><h3>Paramètres de l'entreprise</h3><form onsubmit="saveSettings(event)">
+<label>Nom de l'entreprise<input id="company" value="Luc Brico-Tech"></label>
+<label>Objectif mensuel de ventes (FCFA)<input id="target" type="number" min="0"></label>
+<label>Devise<input id="currency" value="FCFA"></label>
+<div class="full actions"><button class="btn primary">Enregistrer les paramètres</button></div>
+</form></div>
+<div class="panel"><h3>Gestion des données</h3><button class="btn light" onclick="backup()">Sauvegarder JSON</button> <button class="btn danger" onclick="clearData()">Effacer toutes les données</button></div>
+</section>
+</main>
+</div>
+
+<script>
+const key='lbt_pro_v2';
+let db=JSON.parse(localStorage.getItem(key)||'{"sales":[],"purchases":[],"innovation":[],"activities":[],"settings":{"company":"Luc Brico-Tech","target":0,"currency":"FCFA"}}');
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(key,JSON.stringify(db));updateAll()}
+function money(n){return new Intl.NumberFormat('fr-FR').format(Math.round(n||0))+' '+(db.settings.currency||'FCFA')}
+function today(){return new Date().toISOString().slice(0,10)}
+$('today').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+['sdate','pdate','idate','adate'].forEach(id=>{if($(id))$(id).value=today()});
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const titles={dashboard:'Tableau de bord',sales:'Gestion des ventes',purchases:'Gestion des achats',innovation:'Innovation',activities:'Activités',reports:'Rapports',settings:'Paramètres'};$('pageTitle').textContent=titles[id]}
+function addSale(e){e.preventDefault();db.sales.push({id:Date.now(),date:$('sdate').value,client:$('sclient').value,product:$('sproduct').value,amount:+$('samount').value,cat:$('scat').value,status:$('sstatus').value});e.target.reset();$('sdate').value=today();save()}
+function addPurchase(e){e.preventDefault();db.purchases.push({id:Date.now(),date:$('pdate').value,supplier:$('psupplier').value,item:$('pitem').value,amount:+$('pamount').value,cat:$('pcat').value,status:$('pstatus').value});e.target.reset();$('pdate').value=today();save()}
+function addInnovation(e){e.preventDefault();db.innovation.push({id:Date.now(),project:$('iproject').value,owner:$('iowner').value,goal:$('igoal').value,progress:+$('iprogress').value,date:$('idate').value,status:$('istatus').value,comment:$('icomment').value});e.target.reset();$('idate').value=today();save()}
+function addActivity(e){e.preventDefault();db.activities.push({id:Date.now(),name:$('aname').value,owner:$('aowner').value,objective:$('aobjective').value,progress:+$('aprogress').value,date:$('adate').value,priority:$('apriority').value,comment:$('acomment').value});e.target.reset();$('adate').value=today();save()}
+function del(type,id){db[type]=db[type].filter(x=>x.id!==id);save()}
+function renderSales(){let q=($('salesSearch')?.value||'').toLowerCase();let a=db.sales.filter(x=>(x.client+' '+x.product).toLowerCase().includes(q));$('salesTable').innerHTML=a.length?`<table><tr><th>Date</th><th>Client</th><th>Produit/service</th><th>Montant</th><th>Statut</th><th></th></tr>${a.map(x=>`<tr><td>${x.date}</td><td>${x.client}</td><td>${x.product}</td><td><b>${money(x.amount)}</b></td><td><span class="badge ${x.status==='Payée'?'done':'pending'}">${x.status}</span></td><td><button class="btn danger" onclick="del('sales',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucune vente enregistrée.</div>'}
+function renderPurchases(){$('purchaseTable').innerHTML=db.purchases.length?`<table><tr><th>Date</th><th>Fournisseur</th><th>Article/service</th><th>Montant</th><th>Statut</th><th></th></tr>${db.purchases.map(x=>`<tr><td>${x.date}</td><td>${x.supplier}</td><td>${x.item}</td><td><b>${money(x.amount)}</b></td><td><span class="badge ${x.status==='Payé'?'done':'pending'}">${x.status}</span></td><td><button class="btn danger" onclick="del('purchases',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucun achat enregistré.</div>'}
+function renderInnovation(){$('innovationTable').innerHTML=db.innovation.length?`<table><tr><th>Projet</th><th>Responsable</th><th>Objectif</th><th>Progression</th><th>Statut</th><th></th></tr>${db.innovation.map(x=>`<tr><td><b>${x.project}</b></td><td>${x.owner}</td><td>${x.goal}</td><td><div class="progress"><i style="width:${x.progress}%"></i></div>${x.progress}%</td><td>${x.status}</td><td><button class="btn danger" onclick="del('innovation',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucun projet.</div>'}
+function renderActivities(){$('activityTable').innerHTML=db.activities.length?`<table><tr><th>Activité</th><th>Responsable</th><th>Échéance</th><th>Progression</th><th>Priorité</th><th></th></tr>${db.activities.map(x=>`<tr><td><b>${x.name}</b><br><small>${x.objective}</small></td><td>${x.owner}</td><td>${x.date||'-'}</td><td><div class="progress"><i style="width:${x.progress}%"></i></div>${x.progress}%</td><td>${x.priority}</td><td><button class="btn danger" onclick="del('activities',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucune activité.</div>'}
+function updateAll(){
+ let ca=db.sales.reduce((s,x)=>s+x.amount,0),ach=db.purchases.reduce((s,x)=>s+x.amount,0),target=+db.settings.target||0;
+ let sr=target?Math.min(ca/target*100,100):0, ir=db.innovation.length?db.innovation.reduce((s,x)=>s+x.progress,0)/db.innovation.length:0, ar=db.activities.length?db.activities.reduce((s,x)=>s+x.progress,0)/db.activities.length:0;
+ let global=(sr+ir+ar)/3;
+ $('kca').textContent=money(ca);$('kach').textContent=money(ach);$('kres').textContent=money(ca-ach);$('kglobal').textContent=Math.round(global)+'%';$('ktarget').textContent=money(target);$('ksalesrate').textContent=Math.round(sr)+'%';$('kinnovation').textContent=Math.round(ir)+'%';$('kactivity').textContent=Math.round(ar)+'%';
+ renderSales();renderPurchases();renderInnovation();renderActivities();renderReport();renderChart();renderAlerts();
+}
+function renderChart(){let months=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'],vals=months.map((_,i)=>db.sales.filter(x=>new Date(x.date).getMonth()===i).reduce((s,x)=>s+x.amount,0)),max=Math.max(...vals,1);$('chart').innerHTML=months.map((m,i)=>`<div class="bar-wrap"><div class="bar-value">${vals[i]?Math.round(vals[i]/1000)+'k':''}</div><div class="bar" style="height:${Math.max(vals[i]/max*85,2)}%"></div><div class="bar-label">${m}</div></div>`).join('')}
+function renderAlerts(){let alerts=[];if(db.settings.target&&!db.sales.length)alerts.push('Aucune vente enregistrée pour le moment.');db.activities.filter(x=>x.date&&x.progress<100&&x.date<today()).forEach(x=>alerts.push('Échéance dépassée : '+x.name));db.innovation.filter(x=>x.status==='Bloqué').forEach(x=>alerts.push('Projet bloqué : '+x.project));$('alerts').innerHTML=alerts.length?alerts.map(a=>`<div class="card" style="margin-bottom:8px">${a}</div>`).join(''):'Aucune alerte.'}
+function renderReport(){let ca=db.sales.reduce((s,x)=>s+x.amount,0),ach=db.purchases.reduce((s,x)=>s+x.amount,0);$('report').innerHTML=`<table><tr><th>Indicateur</th><th>Valeur</th></tr><tr><td>Chiffre d'affaires</td><td><b>${money(ca)}</b></td></tr><tr><td>Total achats</td><td>${money(ach)}</td></tr><tr><td>Résultat brut simplifié</td><td>${money(ca-ach)}</td></tr><tr><td>Nombre de ventes</td><td>${db.sales.length}</td></tr><tr><td>Nombre d'achats</td><td>${db.purchases.length}</td></tr><tr><td>Projets d'innovation</td><td>${db.innovation.length}</td></tr><tr><td>Activités suivies</td><td>${db.activities.length}</td></tr></table>`}
+function saveSettings(e){e.preventDefault();db.settings.company=$('company').value;db.settings.target=+$('target').value||0;db.settings.currency=$('currency').value||'FCFA';save();alert('Paramètres enregistrés.')}
+function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='luc-brico-tech-sauvegarde.json';a.click()}
+function clearData(){if(confirm('Effacer toutes les données ?')){localStorage.removeItem(key);location.reload()}}
+function exportCSV(){let rows=[['Type','Date','Tiers','Désignation','Montant','Statut']];db.sales.forEach(x=>rows.push(['Vente',x.date,x.client,x.product,x.amount,x.status]));db.purchases.forEach(x=>rows.push(['Achat',x.date,x.supplier,x.item,x.amount,x.status]));let csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='luc-brico-tech-donnees.csv';a.click()}
+$('target').value=db.settings.target;
+updateAll();
+</script>
+</body>
+</html>
