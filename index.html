@@ -4,35 +4,95 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luc Brico-Tech — Gestion d'entreprise</title>
+
 <style>
 :root{--primary:#123b5d;--secondary:#1e6f9f;--accent:#f39c12;--bg:#f4f7fa;--card:#fff;--text:#1f2937;--muted:#6b7280;--success:#159957;--danger:#c0392b;--border:#e5e7eb}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.app{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--primary);color:white;padding:22px 15px;position:fixed;inset:0 auto 0 0;z-index:10}
-.logo{font-size:22px;font-weight:800;padding:10px 12px 28px}.logo span{color:#f6b73c}
-.nav button{width:100%;border:0;background:transparent;color:#dbe8f1;text-align:left;padding:13px 14px;margin:3px 0;border-radius:9px;cursor:pointer;font-size:14px}.nav button:hover,.nav button.active{background:#1d587e;color:white}
-.main{margin-left:250px;width:calc(100% - 250px);padding:24px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:25px}.date{color:var(--muted);font-size:13px}
-.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 2px 8px #00000008}.kpi-label{font-size:13px;color:var(--muted)}.kpi{font-size:25px;font-weight:800;margin:8px 0}.trend{font-size:12px;color:var(--success)}
-.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px}.panel h3{margin:0 0 15px;font-size:17px}
-.chart{height:260px;display:flex;align-items:end;gap:12px;padding:15px 5px;border-bottom:1px solid var(--border)}.bar-wrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}.bar{width:70%;min-height:3px;background:var(--secondary);border-radius:6px 6px 0 0}.bar-label{font-size:11px;color:var(--muted)}.bar-value{font-size:10px}
-form{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.full{grid-column:1/-1}label{font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px}input,select,textarea{width:100%;padding:11px;border:1px solid #d7dde4;border-radius:8px;background:white;font:inherit}textarea{min-height:80px;resize:vertical}.actions{display:flex;gap:10px;justify-content:flex-end}.btn{border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-weight:700}.primary{background:var(--primary);color:white}.orange{background:var(--accent);color:white}.light{background:#edf2f7;color:#374151}.danger{background:#fff0ee;color:var(--danger)}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left}th{color:var(--muted);font-size:12px;background:#f8fafc}.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700}.done{background:#e8f7ef;color:var(--success)}.pending{background:#fff4df;color:#a86300}.late{background:#fdebea;color:var(--danger)}
-.progress{height:8px;background:#edf0f2;border-radius:8px;overflow:hidden}.progress i{display:block;height:100%;background:var(--secondary)}
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.filters input,.filters select{max-width:220px}.empty{text-align:center;color:var(--muted);padding:30px}
-@media(max-width:950px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px)}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
-@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%;padding:14px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}form{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start}.top h1{font-size:20px}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--primary);color:white;padding:22px 15px;position:fixed;inset:0 auto 0 0;z-index:10}
+.logo{font-size:22px;font-weight:800;padding:10px 12px 28px}
+.logo span{color:#f6b73c}
+.nav button{width:100%;border:0;background:transparent;color:#dbe8f1;text-align:left;padding:13px 14px;margin:3px 0;border-radius:9px;cursor:pointer;font-size:14px}
+.nav button:hover,.nav button.active{background:#1d587e;color:white}
+.main{margin-left:250px;width:calc(100% - 250px);padding:24px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.top h1{margin:0;font-size:25px}
+.date{color:var(--muted);font-size:13px}
+.page{display:none}
+.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 2px 8px #00000008}
+.kpi-label{font-size:13px;color:var(--muted)}
+.kpi{font-size:25px;font-weight:800;margin:8px 0}
+.trend{font-size:12px;color:var(--success)}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px}
+.panel h3{margin:0 0 15px;font-size:17px}
+.chart{height:260px;display:flex;align-items:end;gap:12px;padding:15px 5px;border-bottom:1px solid var(--border)}
+.bar-wrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}
+.bar{width:70%;min-height:3px;background:var(--secondary);border-radius:6px 6px 0 0}
+.bar-label{font-size:11px;color:var(--muted)}
+.bar-value{font-size:10px}
+form{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d7dde4;border-radius:8px;background:white;font:inherit}
+textarea{min-height:80px;resize:vertical}
+.actions{display:flex;gap:10px;justify-content:flex-end}
+.btn{border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-weight:700}
+.btn:disabled{opacity:.7;cursor:not-allowed}
+.primary{background:var(--primary);color:white}
+.orange{background:var(--accent);color:white}
+.light{background:#edf2f7;color:#374151}
+.danger{background:#fff0ee;color:var(--danger)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left}
+th{color:var(--muted);font-size:12px;background:#f8fafc}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.done{background:#e8f7ef;color:var(--success)}
+.pending{background:#fff4df;color:#a86300}
+.late{background:#fdebea;color:var(--danger)}
+.progress{height:8px;background:#edf0f2;border-radius:8px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--secondary)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.filters input,.filters select{max-width:220px}
+.empty{text-align:center;color:var(--muted);padding:30px}
+
+@media(max-width:950px){
+.sidebar{width:210px}
+.main{margin-left:210px;width:calc(100% - 210px)}
+.cards{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:1fr}
+}
+
+@media(max-width:650px){
+.sidebar{position:relative;width:100%;height:auto}
+.app{display:block}
+.main{margin:0;width:100%;padding:14px}
+.nav{display:grid;grid-template-columns:repeat(2,1fr)}
+.cards{grid-template-columns:1fr 1fr}
+form{grid-template-columns:1fr}
+.full{grid-column:auto}
+.top{align-items:flex-start}
+.top h1{font-size:20px}
+}
 </style>
 </head>
+
 <body>
 
 <div id="loginScreen" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#123b5d,#1e6f9f);">
+
 <div style="width:100%;max-width:430px;background:white;border-radius:20px;padding:35px;box-shadow:0 20px 60px rgba(0,0,0,.25);">
+
 <div style="text-align:center;margin-bottom:25px;">
 <div class="logo" style="padding:0;color:#123b5d;">Luc <span>Brico-Tech</span></div>
 <div style="font-size:14px;color:#6b7280;margin-top:8px;">Plateforme de gestion</div>
 </div>
 
 <form id="loginForm">
+
 <div style="margin-bottom:14px">
 <label for="loginEmail">Adresse e-mail</label>
 <input id="loginEmail" type="email" placeholder="exemple@email.com" autocomplete="email" required>
@@ -48,11 +108,13 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px;bord
 <button id="loginButton" class="btn primary" type="submit" style="width:100%;padding:12px">
 Se connecter
 </button>
+
 </form>
 </div>
 </div>
 
-<div class="app">
+
+<div class="app" style="display:none">
 
 <aside class="sidebar">
 
@@ -71,6 +133,7 @@ Se connecter
 </div>
 </aside>
 
+
 <main class="main">
 
 <header class="top">
@@ -83,6 +146,7 @@ Se connecter
 <button class="btn orange" onclick="exportCSV()">Exporter les données</button>
 
 </header>
+
 
 <section id="dashboard" class="page active">
 
@@ -114,6 +178,7 @@ Se connecter
 
 </div>
 
+
 <div class="cards">
 
 <div class="card">
@@ -138,6 +203,7 @@ Se connecter
 
 </div>
 
+
 <div class="grid">
 
 <div class="panel">
@@ -153,6 +219,7 @@ Se connecter
 </div>
 
 </section>
+
 
 <section id="sales" class="page">
 
@@ -206,8 +273,8 @@ Statut
 </div>
 
 </form>
-
 </div>
+
 
 <div class="panel">
 
@@ -222,6 +289,7 @@ Statut
 </div>
 
 </section>
+
 
 <section id="purchases" class="page">
 
@@ -276,8 +344,8 @@ Statut
 </div>
 
 </form>
-
 </div>
+
 
 <div class="panel">
 
@@ -288,6 +356,7 @@ Statut
 </div>
 
 </section>
+
 
 <section id="innovation" class="page">
 
@@ -349,6 +418,7 @@ Commentaire
 
 </div>
 
+
 <div class="panel">
 
 <h3>Portefeuille d'innovation</h3>
@@ -358,6 +428,7 @@ Commentaire
 </div>
 
 </section>
+
 
 <section id="activities" class="page">
 
@@ -418,6 +489,7 @@ Commentaire
 
 </div>
 
+
 <div class="panel">
 
 <h3>Activités de l'entreprise</h3>
@@ -427,6 +499,7 @@ Commentaire
 </div>
 
 </section>
+
 
 <section id="reports" class="page">
 
@@ -443,6 +516,7 @@ Imprimer / PDF
 </div>
 
 </section>
+
 
 <section id="settings" class="page">
 
@@ -477,6 +551,7 @@ Enregistrer les paramètres
 
 </div>
 
+
 <div class="panel">
 
 <h3>Gestion des données</h3>
@@ -496,9 +571,18 @@ Effacer toutes les données
 </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <script>
+
+'use strict';
+
+
+/* =========================
+   CONFIGURATION SUPABASE
+========================= */
 
 const SUPABASE_URL =
 "https://uypnbbweblrzbwrduyii.supabase.co";
@@ -506,156 +590,261 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_k3LvgCqni5_xD6ThMuXN8w_3WYksfOP";
 
-const supabaseClient =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
 
-let currentUser=null;
-let currentRole='employee';
-let currentProfile=null;
+let supabaseClient = null;
 
-let db={
-sales:[],
-purchases:[],
-innovation:[],
-activities:[],
-settings:{
-company:'Luc Brico-Tech',
-target:0,
-currency:'FCFA'
+let currentUser = null;
+let currentRole = 'employee';
+let currentProfile = null;
+
+
+let db = {
+sales: [],
+purchases: [],
+innovation: [],
+activities: [],
+settings: {
+company: 'Luc Brico-Tech',
+target: 0,
+currency: 'FCFA'
 }
 };
 
-const $=id=>document.getElementById(id);
 
-function esc(v){
+/* =========================
+   OUTILS
+========================= */
 
-return String(v??'')
-.replace(/[&<>"']/g,m=>({
+const $ = id => document.getElementById(id);
+
+
+function esc(value){
+
+return String(value ?? '')
+.replace(/[&<>"']/g, function(m){
+
+return {
 '&':'&amp;',
 '<':'&lt;',
 '>':'&gt;',
 '"':'&quot;',
 "'":'&#039;'
-}[m]));
+}[m];
+
+});
 
 }
+
 
 function today(){
 
-return new Date()
-.toISOString()
-.slice(0,10);
+const d = new Date();
+
+const year = d.getFullYear();
+
+const month = String(d.getMonth()+1).padStart(2,'0');
+
+const day = String(d.getDate()).padStart(2,'0');
+
+return `${year}-${month}-${day}`;
 
 }
+
 
 function money(n){
 
 return new Intl.NumberFormat('fr-FR')
-.format(Math.round(n||0))
+.format(Math.round(Number(n)||0))
 +' '+
-(db.settings.currency||'FCFA');
+(db.settings.currency || 'FCFA');
 
 }
+
+
+/* =========================
+   MESSAGES LOGIN
+========================= */
 
 function showLoginMessage(message,type='error'){
 
-const box=$('loginMessage');
+const box = $('loginMessage');
 
 if(!box)return;
 
-box.textContent=message;
-box.style.display='block';
+box.textContent = message;
 
-box.style.background=
-type==='success'
-?'#e8f7ef'
-:'#fdebea';
+box.style.display = 'block';
 
-box.style.color=
-type==='success'
-?'#159957'
-:'#c0392b';
+if(type === 'success'){
+
+box.style.background = '#e8f7ef';
+box.style.color = '#159957';
+
+}else{
+
+box.style.background = '#fdebea';
+box.style.color = '#c0392b';
 
 }
+
+}
+
+
+function hideLoginMessage(){
+
+const box = $('loginMessage');
+
+if(box){
+
+box.style.display = 'none';
+box.textContent = '';
+
+}
+
+}
+
 
 function setLoginLoading(loading){
 
-const btn=$('loginButton');
+const btn = $('loginButton');
 
 if(!btn)return;
 
-btn.disabled=loading;
+btn.disabled = loading;
 
-btn.textContent=
+btn.textContent =
 loading
-?'Connexion en cours...'
-:'Se connecter';
+? 'Connexion en cours...'
+: 'Se connecter';
 
 }
 
+
+/* =========================
+   INITIALISATION SUPABASE
+========================= */
+
+function initSupabase(){
+
+if(
+typeof window.supabase === 'undefined' ||
+typeof window.supabase.createClient !== 'function'
+){
+
+throw new Error(
+'La bibliothèque Supabase n’a pas pu être chargée. Vérifie la connexion Internet.'
+);
+
+}
+
+supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+}
+
+
+/* =========================
+   PROFIL UTILISATEUR
+========================= */
+
 async function loadUserProfile(user){
 
-const {data,error}=
+const {
+data,
+error
+} =
 await supabaseClient
 .from('profiles')
 .select('id,full_name,role')
 .eq('id',user.id)
 .maybeSingle();
 
-if(error)throw error;
+if(error){
 
-currentProfile=
-data||{
-id:user.id,
-full_name:user.user_metadata?.full_name||'',
-role:'employee'
-};
-
-const role=
-String(currentProfile.role||'')
-.toLowerCase()
-.trim();
-
-currentRole=
-['admin','président','president'].includes(role)
-?'admin'
-:'employee';
+throw error;
 
 }
 
+
+currentProfile =
+data ||
+{
+id:user.id,
+full_name:user.user_metadata?.full_name || '',
+role:'employee'
+};
+
+
+const role =
+String(currentProfile.role || '')
+.toLowerCase()
+.trim();
+
+
+currentRole =
+[
+'admin',
+'président',
+'president'
+].includes(role)
+? 'admin'
+: 'employee';
+
+}
+
+
+/* =========================
+   DROITS D'ACCÈS
+========================= */
+
 function applyRoleAccess(){
 
-const reportBtn=
+const reportBtn =
 document.querySelector(
 '.nav button[onclick*="reports"]'
 );
 
-const settingsBtn=
+const settingsBtn =
 document.querySelector(
 '.nav button[onclick*="settings"]'
 );
 
-if(reportBtn)
-reportBtn.style.display=
-currentRole==='admin'?'':'none';
 
-if(settingsBtn)
-settingsBtn.style.display=
-currentRole==='admin'?'':'none';
+if(reportBtn){
 
-let roleBox=
+reportBtn.style.display =
+currentRole === 'admin'
+? ''
+: 'none';
+
+}
+
+
+if(settingsBtn){
+
+settingsBtn.style.display =
+currentRole === 'admin'
+? ''
+: 'none';
+
+}
+
+
+let roleBox =
 $('userRoleBox');
+
 
 if(!roleBox){
 
-roleBox=document.createElement('div');
+roleBox =
+document.createElement('div');
 
-roleBox.id='userRoleBox';
+roleBox.id = 'userRoleBox';
 
-roleBox.style.cssText=
+roleBox.style.cssText =
 'margin-top:18px;padding:10px 12px;border-radius:9px;background:#0e304a;color:#dbe8f1;font-size:12px;';
 
 document
@@ -664,39 +853,44 @@ document
 
 }
 
-const name=
-currentProfile?.full_name||
-currentUser?.email||
+
+const name =
+currentProfile?.full_name ||
+currentUser?.email ||
 'Utilisateur';
 
-roleBox.innerHTML=
+
+roleBox.innerHTML =
 '<b>'+
 esc(name)+
 '</b><br><span>'+
 (
-currentRole==='admin'
-?'Président / Administrateur'
-:'Employé / Membre'
+currentRole === 'admin'
+? 'Président / Administrateur'
+: 'Employé / Membre'
 )+
 '</span>';
 
-let logoutBtn=
+
+let logoutBtn =
 $('logoutButton');
+
 
 if(!logoutBtn){
 
-logoutBtn=document.createElement('button');
+logoutBtn =
+document.createElement('button');
 
-logoutBtn.id='logoutButton';
+logoutBtn.id = 'logoutButton';
 
-logoutBtn.className='btn light';
+logoutBtn.className = 'btn light';
 
-logoutBtn.textContent='Se déconnecter';
+logoutBtn.textContent = 'Se déconnecter';
 
-logoutBtn.style.cssText=
+logoutBtn.style.cssText =
 'width:100%;margin-top:10px;';
 
-logoutBtn.onclick=logout;
+logoutBtn.onclick = logout;
 
 document
 .querySelector('.sidebar')
@@ -706,9 +900,15 @@ document
 
 }
 
+
+/* =========================
+   ENTRÉE DANS L'APPLICATION
+========================= */
+
 async function enterApp(user){
 
-currentUser=user;
+currentUser = user;
+
 
 try{
 
@@ -716,54 +916,62 @@ await loadUserProfile(user);
 
 applyRoleAccess();
 
-$('loginScreen')
-.style.display='none';
+$('loginScreen').style.display = 'none';
 
-document
-.querySelector('.app')
-.style.display='flex';
+document.querySelector('.app').style.display = 'flex';
 
 await loadAll();
 
+
 }catch(error){
 
-console.error(error);
+console.error('Erreur enterApp:',error);
 
 await supabaseClient.auth.signOut();
 
-currentUser=null;
+currentUser = null;
+currentProfile = null;
+currentRole = 'employee';
 
-document
-.querySelector('.app')
-.style.display='none';
+document.querySelector('.app').style.display = 'none';
 
-$('loginScreen')
-.style.display='flex';
+$('loginScreen').style.display = 'flex';
 
 showLoginMessage(
-'Connexion réussie, mais le profil ou les données n’ont pas pu être chargés.'
+'Connexion réussie, mais les données du compte ne peuvent pas être chargées. Vérifie les tables et les autorisations Supabase.'
 );
 
 }
 
 }
 
+
+/* =========================
+   DÉCONNEXION
+========================= */
+
 async function logout(){
+
+try{
 
 await supabaseClient.auth.signOut();
 
-currentUser=null;
-currentProfile=null;
-currentRole='employee';
+}catch(error){
 
-document
-.querySelector('.app')
-.style.display='none';
+console.error(error);
 
-$('loginScreen')
-.style.display='flex';
+}
 
-$('loginPassword').value='';
+
+currentUser = null;
+currentProfile = null;
+currentRole = 'employee';
+
+document.querySelector('.app').style.display = 'none';
+
+$('loginScreen').style.display = 'flex';
+
+$('loginPassword').value = '';
 
 showLoginMessage(
 'Vous êtes déconnecté.',
@@ -772,20 +980,30 @@ showLoginMessage(
 
 }
 
-$('loginForm')
-.addEventListener(
-'submit',
-async function(e){
 
-e.preventDefault();
+/* =========================
+   CONNEXION
+========================= */
 
-const email=
-$('loginEmail')
-.value.trim();
+async function login(){
 
-const password=
-$('loginPassword')
-.value;
+const email =
+$('loginEmail').value.trim();
+
+const password =
+$('loginPassword').value;
+
+
+if(!email || !password){
+
+showLoginMessage(
+'Veuillez saisir votre adresse e-mail et votre mot de passe.'
+);
+
+return;
+
+}
+
 
 setLoginLoading(true);
 
@@ -794,56 +1012,92 @@ showLoginMessage(
 'success'
 );
 
+
 try{
 
-const {data,error}=
-await supabaseClient
-.auth
-.signInWithPassword({
-email,
-password
+if(!supabaseClient){
+
+initSupabase();
+
+}
+
+
+const {
+data,
+error
+} =
+await supabaseClient.auth.signInWithPassword({
+email:email,
+password:password
 });
 
-if(error)throw error;
 
-if(!data.user)
+if(error){
+
+throw error;
+
+}
+
+
+if(!data || !data.user){
+
 throw new Error(
 'Utilisateur non trouvé.'
 );
 
+}
+
+
 await enterApp(data.user);
+
 
 }catch(error){
 
-console.error(error);
+console.error('Erreur de connexion:',error);
 
-let msg=
-error?.message||
+let msg =
+error?.message ||
 'Erreur de connexion.';
 
+
+const lower =
+msg.toLowerCase();
+
+
 if(
-msg.toLowerCase()
-.includes('invalid login credentials')
+lower.includes('invalid login credentials') ||
+lower.includes('invalid_credentials')
 ){
 
-msg=
+msg =
 'Adresse e-mail ou mot de passe incorrect.';
 
 }
 
 else if(
-msg.toLowerCase()
-.includes('email not confirmed')
+lower.includes('email not confirmed')
 ){
 
-msg=
+msg =
 'Cette adresse e-mail doit être confirmée dans Supabase.';
 
 }
 
+else if(
+lower.includes('failed to fetch') ||
+lower.includes('network')
+){
+
+msg =
+'Connexion Internet impossible. Vérifie Internet puis réessaie.';
+
+}
+
+
 showLoginMessage(msg);
 
 }
+
 
 finally{
 
@@ -851,28 +1105,1775 @@ setLoginLoading(false);
 
 }
 
-});
+}
 
-supabaseClient.auth.onAuthStateChange(
-async(event,session)=>{
+
+/* =========================
+   FORMULAIRE LOGIN
+========================= */
+
+document
+.getElementById('loginForm')
+.addEventListener(
+'submit',
+function(e){
+
+e.preventDefault();
+
+login();
+
+}
+);
+
+
+/* =========================
+   SESSION SUPABASE
+========================= */
 
 if(
-session?.user&&
-!currentUser
+typeof window.supabase !== 'undefined' &&
+typeof window.supabase.createClient === 'function'
 ){
 
-await enterApp(session.user);
+try{
+
+initSupabase();
+
+
+supabaseClient.auth.onAuthStateChange(
+function(event,session){
+
+if(
+session?.user &&
+!currentUser &&
+event !== 'SIGNED_OUT'
+){
+
+setTimeout(
+function(){
+
+enterApp(session.user);
+
+},
+0
+);
 
 }
 
+
 if(
-!session?.user&&
-event==='SIGNED_OUT'
+!session?.user &&
+event === 'SIGNED_OUT'
 ){
 
-document
-.querySelector('.app')
-.style.display='none';
+currentUser = null;
 
-$('loginScreen')
-.style.display='flex
+document.querySelector('.app').style.display = 'none';
+
+$('loginScreen').style.display = 'flex';
+
+}
+
+}
+);
+
+
+}catch(error){
+
+console.error(error);
+
+showLoginMessage(
+'Impossible de charger le service de connexion.'
+);
+
+}
+
+}else{
+
+showLoginMessage(
+'Le service de connexion n’a pas pu être chargé. Vérifie Internet.'
+);
+
+}
+
+
+/* =========================
+   INITIALISATION
+========================= */
+
+(async function initAuth(){
+
+$('today').textContent =
+new Date().toLocaleDateString(
+'fr-FR',
+{
+weekday:'long',
+year:'numeric',
+month:'long',
+day:'numeric'
+}
+);
+
+
+[
+'sdate',
+'pdate',
+'idate',
+'adate'
+]
+.forEach(function(id){
+
+if($(id)){
+
+$(id).value = today();
+
+}
+
+});
+
+
+try{
+
+if(!supabaseClient){
+
+initSupabase();
+
+}
+
+
+const {
+data,
+error
+} =
+await supabaseClient.auth.getSession();
+
+
+if(error){
+
+throw error;
+
+}
+
+
+if(data?.session?.user){
+
+await enterApp(
+data.session.user
+);
+
+}else{
+
+$('loginScreen').style.display = 'flex';
+
+document.querySelector('.app').style.display = 'none';
+
+}
+
+}catch(error){
+
+console.error(
+'Erreur initialisation:',
+error
+);
+
+$('loginScreen').style.display = 'flex';
+
+document.querySelector('.app').style.display = 'none';
+
+showLoginMessage(
+'Impossible de vérifier la session. Vérifie Internet.'
+);
+
+}
+
+})();
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(id,btn){
+
+if(
+(id === 'reports' || id === 'settings') &&
+currentRole !== 'admin'
+){
+
+alert(
+'Accès réservé au Président / Administrateur.'
+);
+
+return;
+
+}
+
+
+document
+.querySelectorAll('.page')
+.forEach(function(p){
+
+p.classList.remove('active');
+
+});
+
+
+if($(id)){
+
+$(id).classList.add('active');
+
+}
+
+
+document
+.querySelectorAll('.nav button')
+.forEach(function(b){
+
+b.classList.remove('active');
+
+});
+
+
+if(btn){
+
+btn.classList.add('active');
+
+}
+
+
+const titles = {
+
+dashboard:'Tableau de bord',
+sales:'Gestion des ventes',
+purchases:'Gestion des achats',
+innovation:'Innovation',
+activities:'Activités',
+reports:'Rapports',
+settings:'Paramètres'
+
+};
+
+
+$('pageTitle').textContent =
+titles[id] || 'Luc Brico-Tech';
+
+}
+
+
+/* =========================
+   CHARGEMENT DES DONNÉES
+========================= */
+
+async function loadAll(){
+
+if(!currentUser){
+
+return;
+
+}
+
+
+const uid = currentUser.id;
+
+const admin =
+currentRole === 'admin';
+
+
+async function getTable(table,order){
+
+let query =
+supabaseClient
+.from(table)
+.select('*')
+.order(order,{ascending:false});
+
+
+if(!admin){
+
+query =
+query.eq(
+'user_id',
+uid
+);
+
+}
+
+
+const {
+data,
+error
+} =
+await query;
+
+
+if(error){
+
+throw error;
+
+}
+
+
+return data || [];
+
+}
+
+
+const results =
+await Promise.all([
+
+getTable(
+'sales',
+'sale_date'
+),
+
+getTable(
+'purchases',
+'purchase_date'
+),
+
+getTable(
+'innovation_projects',
+'created_at'
+),
+
+getTable(
+'activities',
+'created_at'
+)
+
+]);
+
+
+db.sales = results[0];
+
+db.purchases = results[1];
+
+db.innovation = results[2];
+
+db.activities = results[3];
+
+
+const {
+data:settings,
+error:settingsError
+} =
+await supabaseClient
+.from('settings')
+.select('*')
+.eq('user_id',uid)
+.maybeSingle();
+
+
+if(settingsError){
+
+throw settingsError;
+
+}
+
+
+if(settings){
+
+db.settings = {
+
+company:
+settings.company_name || 'Luc Brico-Tech',
+
+target:
+Number(
+settings.monthly_sales_target || 0
+),
+
+currency:
+settings.currency || 'FCFA'
+
+};
+
+}
+
+
+$('company').value =
+db.settings.company;
+
+$('target').value =
+db.settings.target;
+
+$('currency').value =
+db.settings.currency;
+
+
+updateAll();
+
+}
+
+
+/* =========================
+   VENTES
+========================= */
+
+async function addSale(e){
+
+e.preventDefault();
+
+
+if(!currentUser){
+
+alert('Vous devez être connecté.');
+
+return;
+
+}
+
+
+const row = {
+
+user_id:
+currentUser.id,
+
+sale_date:
+$('sdate').value,
+
+client:
+$('sclient').value.trim(),
+
+product:
+$('sproduct').value.trim(),
+
+category:
+$('scat').value,
+
+amount:
+Number(
+$('samount').value || 0
+),
+
+status:
+$('sstatus').value,
+
+notes:null
+
+};
+
+
+const {
+error
+} =
+await supabaseClient
+.from('sales')
+.insert(row);
+
+
+if(error){
+
+alert(
+'Erreur lors de l’enregistrement de la vente : '+
+error.message
+);
+
+return;
+
+}
+
+
+e.target.reset();
+
+$('sdate').value = today();
+
+await loadAll();
+
+}
+
+
+/* =========================
+   ACHATS
+========================= */
+
+async function addPurchase(e){
+
+e.preventDefault();
+
+
+if(!currentUser){
+
+alert('Vous devez être connecté.');
+
+return;
+
+}
+
+
+const row = {
+
+user_id:
+currentUser.id,
+
+purchase_date:
+$('pdate').value,
+
+supplier:
+$('psupplier').value.trim(),
+
+item:
+$('pitem').value.trim(),
+
+category:
+$('pcat').value,
+
+amount:
+Number(
+$('pamount').value || 0
+),
+
+status:
+$('pstatus').value,
+
+notes:null
+
+};
+
+
+const {
+error
+} =
+await supabaseClient
+.from('purchases')
+.insert(row);
+
+
+if(error){
+
+alert(
+'Erreur lors de l’enregistrement de l’achat : '+
+error.message
+);
+
+return;
+
+}
+
+
+e.target.reset();
+
+$('pdate').value = today();
+
+await loadAll();
+
+}
+
+
+/* =========================
+   INNOVATION
+========================= */
+
+async function addInnovation(e){
+
+e.preventDefault();
+
+
+if(!currentUser){
+
+alert('Vous devez être connecté.');
+
+return;
+
+}
+
+
+const row = {
+
+user_id:
+currentUser.id,
+
+project:
+$('iproject').value.trim(),
+
+owner:
+$('iowner').value.trim(),
+
+objective:
+$('igoal').value.trim(),
+
+progress:
+Number(
+$('iprogress').value || 0
+),
+
+planned_date:
+$('idate').value || null,
+
+status:
+$('istatus').value,
+
+comment:
+$('icomment').value.trim() || null
+
+};
+
+
+const {
+error
+} =
+await supabaseClient
+.from('innovation_projects')
+.insert(row);
+
+
+if(error){
+
+alert(
+'Erreur lors de l’enregistrement du projet : '+
+error.message
+);
+
+return;
+
+}
+
+
+e.target.reset();
+
+$('idate').value = today();
+
+await loadAll();
+
+}
+
+
+/* =========================
+   ACTIVITÉS
+========================= */
+
+async function addActivity(e){
+
+e.preventDefault();
+
+
+if(!currentUser){
+
+alert('Vous devez être connecté.');
+
+return;
+
+}
+
+
+const progress =
+Number(
+$('aprogress').value || 0
+);
+
+
+let status = 'En cours';
+
+if(progress >= 100){
+
+status = 'Terminée';
+
+}
+
+
+const row = {
+
+user_id:
+currentUser.id,
+
+name:
+$('aname').value.trim(),
+
+owner:
+$('aowner').value.trim(),
+
+objective:
+$('aobjective').value.trim(),
+
+progress:progress,
+
+due_date:
+$('adate').value || null,
+
+priority:
+$('apriority').value,
+
+status:status,
+
+comment:
+$('acomment').value.trim() || null
+
+};
+
+
+const {
+error
+} =
+await supabaseClient
+.from('activities')
+.insert(row);
+
+
+if(error){
+
+alert(
+'Erreur lors de l’enregistrement de l’activité :'+
+error.message
+);
+
+return;
+
+}
+
+
+e.target.reset();
+
+$('adate').value = today();
+
+await loadAll();
+
+}
+
+
+/* =========================
+   SUPPRESSION
+========================= */
+
+async function del(type,id){
+
+if(
+!confirm(
+'Supprimer cet élément ?'
+)
+){
+
+return;
+
+}
+
+
+const map = {
+
+sales:'sales',
+purchases:'purchases',
+innovation:'innovation_projects',
+activities:'activities'
+
+};
+
+
+const table = map[type];
+
+
+if(!table){
+
+return;
+
+}
+
+
+const {
+error
+} =
+await supabaseClient
+.from(table)
+.delete()
+.eq('id',id);
+
+
+if(error){
+
+alert(
+'Suppression impossible : '+
+error.message
+);
+
+return;
+
+}
+
+
+await loadAll();
+
+}
+
+
+/* =========================
+   AFFICHAGE VENTES
+========================= */
+
+function renderSales(){
+
+const search =
+($('salesSearch')?.value || '')
+.toLowerCase();
+
+
+const a =
+db.sales.filter(function(x){
+
+return (
+
+String(x.client || '')+
+' '+
+String(x.product || '')+
+' '+
+String(x.category || '')
+
+)
+.toLowerCase()
+.includes(search);
+
+});
+
+
+$('salesTable').innerHTML =
+a.length ?
+
+`<table>
+
+<tr>
+<th>Date</th>
+<th>Client</th>
+<th>Produit/service</th>
+<th>Montant</th>
+<th>Statut</th>
+<th></th>
+</tr>
+
+${a.map(function(x){
+
+return `
+
+<tr>
+
+<td>${esc(x.sale_date)}</td>
+
+<td>${esc(x.client)}</td>
+
+<td>${esc(x.product)}</td>
+
+<td>
+<b>${money(x.amount)}</b>
+</td>
+
+<td>
+
+<span class="badge ${
+x.status === 'Payée'
+? 'done'
+: x.status === 'Annulée'
+? 'late'
+: 'pending'
+}">
+
+${esc(x.status)}
+
+</span>
+
+</td>
+
+<td>
+
+<button
+class="btn danger"
+onclick="del('sales','${x.id}')">
+
+Suppr.
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}).join('')}
+
+</table>`
+
+:
+
+'<div class="empty">Aucune vente enregistrée.</div>';
+
+}
+
+
+/* =========================
+   AFFICHAGE ACHATS
+========================= */
+
+function renderPurchases(){
+
+$('purchaseTable').innerHTML =
+db.purchases.length ?
+
+`<table>
+
+<tr>
+<th>Date</th>
+<th>Fournisseur</th>
+<th>Article/service</th>
+<th>Montant</th>
+<th>Statut</th>
+<th></th>
+</tr>
+
+${db.purchases.map(function(x){
+
+return `
+
+<tr>
+
+<td>${esc(x.purchase_date)}</td>
+
+<td>${esc(x.supplier)}</td>
+
+<td>${esc(x.item)}</td>
+
+<td>
+<b>${money(x.amount)}</b>
+</td>
+
+<td>
+
+<span class="badge ${
+x.status === 'Payé'
+? 'done'
+: x.status === 'Annulé'
+? 'late'
+: 'pending'
+}">
+
+${esc(x.status)}
+
+</span>
+
+</td>
+
+<td>
+
+<button
+class="btn danger"
+onclick="del('purchases','${x.id}')">
+
+Suppr.
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}).join('')}
+
+</table>`
+
+:
+
+'<div class="empty">Aucun achat enregistré.</div>';
+
+}
+
+
+/* =========================
+   AFFICHAGE INNOVATION
+========================= */
+
+function renderInnovation(){
+
+$('innovationTable').innerHTML =
+db.innovation.length ?
+
+`<table>
+
+<tr>
+<th>Projet</th>
+<th>Responsable</th>
+<th>Objectif</th>
+<th>Progression</th>
+<th>Statut</th>
+<th></th>
+</tr>
+
+${db.innovation.map(function(x){
+
+return `
+
+<tr>
+
+<td>
+<b>${esc(x.project)}</b>
+</td>
+
+<td>${esc(x.owner)}</td>
+
+<td>${esc(x.objective)}</td>
+
+<td>
+
+<div class="progress">
+
+<i style="width:${Math.min(100,Math.max(0,Number(x.progress)||0))}%"></i>
+
+</div>
+
+${Number(x.progress)||0}%
+
+</td>
+
+<td>${esc(x.status)}</td>
+
+<td>
+
+<button
+class="btn danger"
+onclick="del('innovation','${x.id}')">
+
+Suppr.
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}).join('')}
+
+</table>`
+
+:
+
+'<div class="empty">Aucun projet.</div>';
+
+}
+
+
+/* =========================
+   AFFICHAGE ACTIVITÉS
+========================= */
+
+function renderActivities(){
+
+$('activityTable').innerHTML =
+db.activities.length ?
+
+`<table>
+
+<tr>
+<th>Activité</th>
+<th>Responsable</th>
+<th>Échéance</th>
+<th>Progression</th>
+<th>Priorité</th>
+<th></th>
+</tr>
+
+${db.activities.map(function(x){
+
+return `
+
+<tr>
+
+<td>
+
+<b>${esc(x.name)}</b>
+
+<br>
+
+<small>
+${esc(x.objective)}
+</small>
+
+</td>
+
+<td>${esc(x.owner)}</td>
+
+<td>${esc(x.due_date || '-')}</td>
+
+<td>
+
+<div class="progress">
+
+<i style="width:${Math.min(100,Math.max(0,Number(x.progress)||0))}%"></i>
+
+</div>
+
+${Number(x.progress)||0}%
+
+</td>
+
+<td>${esc(x.priority)}</td>
+
+<td>
+
+<button
+class="btn danger"
+onclick="del('activities','${x.id}')">
+
+Suppr.
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}).join('')}
+
+</table>`
+
+:
+
+'<div class="empty">Aucune activité.</div>';
+
+}
+
+
+/* =========================
+   TABLEAU DE BORD
+========================= */
+
+function updateAll(){
+
+const ca =
+db.sales
+.filter(function(x){
+
+return x.status !== 'Annulée';
+
+})
+.reduce(function(s,x){
+
+return s + Number(x.amount || 0);
+
+},0);
+
+
+const ach =
+db.purchases
+.filter(function(x){
+
+return x.status !== 'Annulé';
+
+})
+.reduce(function(s,x){
+
+return s + Number(x.amount || 0);
+
+},0);
+
+
+const target =
+Number(
+db.settings.target || 0
+);
+
+
+const sr =
+target
+? Math.min(
+ca / target * 100,
+100
+)
+: 0;
+
+
+const ir =
+db.innovation.length
+?
+db.innovation.reduce(function(s,x){
+
+return s + Number(x.progress || 0);
+
+},0) / db.innovation.length
+: 0;
+
+
+const ar =
+db.activities.length
+?
+db.activities.reduce(function(s,x){
+
+return s + Number(x.progress || 0);
+
+},0) / db.activities.length
+: 0;
+
+
+const global =
+(sr + ir + ar) / 3;
+
+
+$('kca').textContent =
+money(ca);
+
+$('kach').textContent =
+money(ach);
+
+$('kres').textContent =
+money(ca-ach);
+
+$('kglobal').textContent =
+Math.round(global)+'%';
+
+$('ktarget').textContent =
+money(target);
+
+$('ksalesrate').textContent =
+Math.round(sr)+'%';
+
+$('kinnovation').textContent =
+Math.round(ir)+'%';
+
+$('kactivity').textContent =
+Math.round(ar)+'%';
+
+
+renderSales();
+renderPurchases();
+renderInnovation();
+renderActivities();
+renderReport();
+renderChart();
+renderAlerts();
+
+}
+
+
+/* =========================
+   GRAPHIQUE
+========================= */
+
+function renderChart(){
+
+const months = [
+'Jan','Fév','Mar','Avr',
+'Mai','Juin','Juil','Août',
+'Sep','Oct','Nov','Déc'
+];
+
+
+const vals =
+months.map(function(_,i){
+
+return db.sales
+.filter(function(x){
+
+return (
+x.sale_date &&
+new Date(x.sale_date).getMonth() === i &&
+x.status !== 'Annulée'
+);
+
+})
+.reduce(function(s,x){
+
+return s + Number(x.amount || 0);
+
+},0);
+
+});
+
+
+const max =
+Math.max(...vals,1);
+
+
+$('chart').innerHTML =
+months.map(function(m,i){
+
+return `
+
+<div class="bar-wrap">
+
+<div class="bar-value">
+
+${vals[i] ?
+Math.round(vals[i]/1000)+'k'
+: ''}
+
+</div>
+
+<div
+class="bar"
+style="height:${Math.max(vals[i]/max*85,2)}%">
+</div>
+
+<div class="bar-label">
+${m}
+</div>
+
+</div>
+
+`;
+
+}).join('');
+
+}
+
+
+/* =========================
+   ALERTES
+========================= */
+
+function renderAlerts(){
+
+const alerts = [];
+
+
+if(
+db.settings.target &&
+!db.sales.length
+){
+
+alerts.push(
+'Aucune vente enregistrée pour le moment.'
+);
+
+}
+
+
+db.activities
+.filter(function(x){
+
+return (
+x.due_date &&
+x.progress < 100 &&
+x.due_date < today()
+);
+
+})
+.forEach(function(x){
+
+alerts.push(
+'Échéance dépassée : '+x.name
+);
+
+});
+
+
+db.innovation
+.filter(function(x){
+
+return x.status === 'Bloqué';
+
+})
+.forEach(function(x){
+
+alerts.push(
+'Projet bloqué : '+x.project
+);
+
+});
+
+
+$('alerts').innerHTML =
+alerts.length ?
+
+alerts.map(function(a){
+
+return `
+
+<div class="card" style="margin-bottom:8px">
+
+${esc(a)}
+
+</div>
+
+`;
+
+}).join('')
+
+:
+
+'Aucune alerte.';
+
+}
+
+
+/* =========================
+   RAPPORT
+========================= */
+
+function renderReport(){
+
+const ca =
+db.sales
+.filter(function(x){
+
+return x.status !== 'Annulée';
+
+})
+.reduce(function(s,x){
+
+return s + Number(x.amount || 0);
+
+},0);
+
+
+const ach =
+db.purchases
+.filter(function(x){
+
+return x.status !== 'Annulé';
+
+})
+.reduce(function(s,x){
+
+return s + Number(x.amount || 0);
+
+},0);
+
+
+$('report').innerHTML =
+
+`<table>
+
+<tr>
+<th>Indicateur</th>
+<th>Valeur</th>
+</tr>
+
+<tr>
+<td>Chiffre d'affaires</td>
+<td><b>${money(ca)}</b></td>
+</tr>
+
+<tr>
+<td>Total achats</td>
+<td>${money(ach)}</td>
+</tr>
+
+<tr>
+<td>Résultat brut simplifié</td>
+<td>${money(ca-ach)}</td>
+</tr>
+
+<tr>
+<td>Nombre de ventes</td>
+<td>${db.sales.length}</td>
+</tr>
+
+<tr>
+<td>Nombre d'achats</td>
+<td>${db.purchases.length}</td>
+</tr>
+
+<tr>
+<td>Projets d'innovation</td>
+<td>${db.innovation.length}</td>
+</tr>
+
+<tr>
+<td>Activités suivies</td>
+<td>${db.activities.length}</td>
+</tr>
+
+</table>`;
+
+}
+
+
+/* =========================
+   PARAMÈTRES
+========================= */
+
+async function saveSettings(e){
+
+e.preventDefault();
+
+
+if(currentRole !== 'admin'){
+
+alert(
+'Accès réservé au Président / Administrateur.'
+);
+
+return;
+
+}
+
+
+const row = {
+
+user_id:
+currentUser.id,
+
+company_name:
+$('company').value.trim() ||
+'Luc Brico-Tech',
+
+monthly_sales_target:
+Number(
+$('target').value || 0
+),
+
+currency:
+$('currency').value.trim() ||
+'FCFA',
+
+updated_at:
+new Date().toISOString()
+
+};
+
+
+const {
+error
+} =
+await supabaseClient
+.from('settings')
+.upsert(
+row,
+{
+onConflict:'user_id'
+}
+);
+
+
+if(error){
+
+alert(
+'Erreur lors de l’enregistrement des paramètres : '+
+error.message
+);
+
+return;
+
+}
+
+
+await loadAll();
+
+alert(
+'Paramètres enregistrés.'
+);
+
+}
+
+
+/* =========================
+   SAUVEGARDE JSON
+========================= */
+
+function backup(){
+
+const data = {
+
+sales:db.sales,
+purchases:db.purchases,
+innovation:db.innovation,
+activities:db.activities,
+settings:db.settings
+
+};
+
+
+const blob =
+new Blob(
+[
+JSON.stringify(
+data,
+null,
+2
+)
+],
+{
+type:'application/json'
+}
+);
+
+
+const a =
+document.createElement('a');
+
+a.href =
+URL.createObjectURL(blob);
+
+a.download =
+'luc-brico-tech-sauvegarde.json';
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+setTimeout(function(){
+
+URL.revokeObjectURL(a.href);
+
+},100);
+
+}
+
+
+/* =========================
+   EFFACEMENT DONNÉES
+========================= */
+
+async function clearData(){
+
+if(currentRole !== 'admin'){
+
+alert(
+'Accès réservé au Président / Administrateur.'
+);
+
+return;
+
+}
+
+
+if(
+!confirm(
+'Effacer toutes les données ? Cette action est irréversible.'
+)
+){
+
+return;
+
+}
+
+
+const tables = [
+'sales',
+'purchases',
+'innovation_projects',
+'activities'
+];
+
+
+for(const table of tables){
+
+const {
+error
+} =
+await supabaseClient
+.from(table)
+.delete()
+.not('id','is',null);
+
+
+if(error){
+
+alert(
+'Erreur : '+error.message
+);
+
+return;
+
+}
+
+}
+
+
+await loadAll();
+
+alert(
+'Données effacées.'
+);
+
+}
+
+
+/* =========================
+   EXPORT CSV
+========================= */
+
+function exportCSV(){
+
+const rows = [
+
+[
+'Type',
+'Date',
+'Tiers',
+'Désignation',
+'Montant',
+'Statut'
+]
+
+];
+
+
+db.sales.forEach(function(x){
+
+rows.push([
+'Vente',
+x.sale_date,
+x.client,
+x.product,
+x.amount,
+x.status
+]);
+
+});
+
+
+db.purchases.forEach(function(x){
+
+rows.push([
+'Achat',
+x.purchase_date,
+x.supplier,
+x.item,
+x.amount,
+x.status
+]);
+
+});
+
+
+const csv =
+rows.map(function(r){
+
+return r.map(function(v){
+
+return `"${String(v ?? '')
+.replace(/"/g,'""')}"`;
+
+}).join(';');
+
+}).join('\n');
+
+
+const blob =
+new Blob(
+[csv],
+{
+type:'text/csv;charset=utf-8'
+}
+);
+
+
+const a =
+document.createElement('a');
+
+a.href =
+URL.createObjectURL(blob);
+
+a.download =
+'luc-brico-tech-donnees.csv';
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+setTimeout(function(){
+
+URL.revokeObjectURL(a.href);
+
+},100);
+
+}
+
+</script>
+
+</body>
+</html>
