@@ -1,166 +1,3983 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luc Brico-Tech — Gestion d'entreprise</title>
-<style>
-:root{--primary:#123b5d;--secondary:#1e6f9f;--accent:#f39c12;--bg:#f4f7fa;--card:#fff;--text:#1f2937;--muted:#6b7280;--success:#159957;--danger:#c0392b;--border:#e5e7eb}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.app{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--primary);color:white;padding:22px 15px;position:fixed;inset:0 auto 0 0;z-index:10}
-.logo{font-size:22px;font-weight:800;padding:10px 12px 28px}.logo span{color:#f6b73c}
-.nav button{width:100%;border:0;background:transparent;color:#dbe8f1;text-align:left;padding:13px 14px;margin:3px 0;border-radius:9px;cursor:pointer;font-size:14px}.nav button:hover,.nav button.active{background:#1d587e;color:white}
-.main{margin-left:250px;width:calc(100% - 250px);padding:24px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:25px}.date{color:var(--muted);font-size:13px}
-.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 2px 8px #00000008}.kpi-label{font-size:13px;color:var(--muted)}.kpi{font-size:25px;font-weight:800;margin:8px 0}.trend{font-size:12px;color:var(--success)}
-.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.panel{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px}.panel h3{margin:0 0 15px;font-size:17px}
-.chart{height:260px;display:flex;align-items:end;gap:12px;padding:15px 5px;border-bottom:1px solid var(--border)}.bar-wrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}.bar{width:70%;min-height:3px;background:var(--secondary);border-radius:6px 6px 0 0}.bar-label{font-size:11px;color:var(--muted)}.bar-value{font-size:10px}
-form{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.full{grid-column:1/-1}label{font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px}input,select,textarea{width:100%;padding:11px;border:1px solid #d7dde4;border-radius:8px;background:white;font:inherit}textarea{min-height:80px;resize:vertical}.actions{display:flex;gap:10px;justify-content:flex-end}.btn{border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-weight:700}.primary{background:var(--primary);color:white}.orange{background:var(--accent);color:white}.light{background:#edf2f7;color:#374151}.danger{background:#fff0ee;color:var(--danger)}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left}th{color:var(--muted);font-size:12px;background:#f8fafc}.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700}.done{background:#e8f7ef;color:var(--success)}.pending{background:#fff4df;color:#a86300}.late{background:#fdebea;color:var(--danger)}
-.progress{height:8px;background:#edf0f2;border-radius:8px;overflow:hidden}.progress i{display:block;height:100%;background:var(--secondary)}
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.filters input,.filters select{max-width:220px}.empty{text-align:center;color:var(--muted);padding:30px}
-@media(max-width:950px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px)}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
-@media(max-width:650px){.sidebar{position:relative;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%;padding:14px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr 1fr}form{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start}.top h1{font-size:20px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luc Brico-Tech — Gestion</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* LOGIN */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo h1 {
+      color: #1d4ed8;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .logo p {
+      color: #64748b;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 11px 13px;
+      background: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #172033;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: white;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .message {
+      padding: 10px 12px;
+      border-radius: 9px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* APP */
+    #app {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #1d4ed8;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .role-badge {
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 70px);
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #0f172a;
+      padding: 20px 12px;
+      flex-shrink: 0;
+    }
+
+    .nav-title {
+      color: #94a3b8;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin: 12px 12px 8px;
+      font-weight: 700;
+    }
+
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      color: #cbd5e1;
+      border: 0;
+      padding: 12px 14px;
+      border-radius: 9px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: #1d4ed8;
+      color: white;
+    }
+
+    .main {
+      flex: 1;
+      padding: 25px;
+      overflow-x: auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .page-header h2 {
+      font-size: 26px;
+    }
+
+    .page-header p {
+      color: #64748b;
+      margin-top: 5px;
+    }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .kpi-title {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .kpi-value {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .section {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      margin-bottom: 16px;
+    }
+
+    /* TABLE */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 750px;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-orange {
+      background: #ffedd5;
+      color: #9a3412;
+    }
+
+    .status-red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-blue {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    /* FORM GRID */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      width: 130px;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #2563eb;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sidebar {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+        padding: 10px;
+      }
+
+      .nav-title {
+        display: none;
+      }
+
+      .nav-btn {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      .main {
+        padding: 15px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .topbar-title {
+        font-size: 17px;
+      }
+
+      .user-info .role-badge {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-<aside class="sidebar">
-  <div class="logo">Luc <span>Brico-Tech</span></div>
-  <div class="nav">
-    <button class="active" onclick="showPage('dashboard',this)">▦ Tableau de bord</button>
-    <button onclick="showPage('sales',this)">▤ Ventes</button>
-    <button onclick="showPage('purchases',this)">▥ Achats</button>
-    <button onclick="showPage('innovation',this)">◆ Innovation</button>
-    <button onclick="showPage('activities',this)">✓ Activités</button>
-    <button onclick="showPage('reports',this)">◫ Rapports</button>
-    <button onclick="showPage('settings',this)">⚙ Paramètres</button>
+
+<!-- =========================
+     CONNEXION
+========================= -->
+
+<div id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="logo">
+      <h1>Luc Brico-Tech</h1>
+      <p>Plateforme de gestion</p>
+    </div>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+        <label for="email">Adresse e-mail</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="exemple@email.com"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Votre mot de passe"
+          required
+        >
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit">
+        Se connecter
+      </button>
+
+      <div id="loginMessage"></div>
+
+    </form>
+
   </div>
-</aside>
 
-<main class="main">
-<header class="top"><div><h1 id="pageTitle">Tableau de bord</h1><div class="date" id="today"></div></div><button class="btn orange" onclick="exportCSV()">Exporter les données</button></header>
-
-<section id="dashboard" class="page active">
-<div class="cards">
-<div class="card"><div class="kpi-label">Chiffre d'affaires</div><div class="kpi" id="kca">0 FCFA</div><div class="trend">Ventes enregistrées</div></div>
-<div class="card"><div class="kpi-label">Achats</div><div class="kpi" id="kach">0 FCFA</div><div class="trend">Dépenses d'approvisionnement</div></div>
-<div class="card"><div class="kpi-label">Résultat brut simplifié</div><div class="kpi" id="kres">0 FCFA</div><div class="trend">CA − achats</div></div>
-<div class="card"><div class="kpi-label">Taux global d'activité</div><div class="kpi" id="kglobal">0%</div><div class="trend">Indicateur de suivi</div></div>
 </div>
-<div class="cards">
-<div class="card"><div class="kpi-label">Objectif ventes</div><div class="kpi" id="ktarget">0 FCFA</div></div>
-<div class="card"><div class="kpi-label">Taux réalisation ventes</div><div class="kpi" id="ksalesrate">0%</div></div>
-<div class="card"><div class="kpi-label">Innovation</div><div class="kpi" id="kinnovation">0%</div></div>
-<div class="card"><div class="kpi-label">Activités</div><div class="kpi" id="kactivity">0%</div></div>
+
+
+<!-- =========================
+     APPLICATION
+========================= -->
+
+<div id="app" class="hidden">
+
+  <header class="topbar">
+
+    <div class="topbar-title">
+      Luc Brico-Tech
+    </div>
+
+    <div class="user-info">
+
+      <span id="userName">
+        Utilisateur
+      </span>
+
+      <span id="userRole" class="role-badge">
+        Employé
+      </span>
+
+      <button
+        id="logoutBtn"
+        class="btn btn-danger"
+      >
+        Déconnexion
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="nav-title">
+        Menu
+      </div>
+
+      <button
+        class="nav-btn active"
+        data-page="dashboard"
+      >
+        📊 Tableau de bord
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="sales"
+      >
+        💰 Ventes
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="purchases"
+      >
+        🛒 Achats
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="innovation"
+      >
+        💡 Innovation
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="activities"
+      >
+        📋 Activités
+      </button>
+
+      <button
+        class="nav-btn admin-only"
+        data-page="reports"
+      >
+        📈 Rapports
+      </button>
+
+      <button
+        class="nav-btn admin-only"
+        data-page="settings"
+      >
+        ⚙️ Paramètres
+      </button>
+
+    </aside>
+
+
+    <!-- CONTENU -->
+
+    <main class="main">
+
+
+      <!-- =========================
+           DASHBOARD
+      ========================= -->
+
+      <section
+        id="page-dashboard"
+        class="page active"
+      >
+
+        <div class="page-header">
+          <div>
+            <h2>Tableau de bord</h2>
+            <p>Vue générale de Luc Brico-Tech</p>
+          </div>
+        </div>
+
+
+        <div class="cards">
+
+          <div class="card">
+            <div class="kpi-title">
+              Ventes
+            </div>
+
+            <div
+              class="kpi-value"
+              id="kpiSales"
+            >
+              0 FCFA
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="kpi-title">
+              Achats
+            </div>
+
+            <div
+              class="kpi-value"
+              id="kpiPurchases"
+            >
+              0 FCFA
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="kpi-title">
+              Projets innovation
+            </div>
+
+            <div
+              class="kpi-value"
+              id="kpiInnovation"
+            >
+              0
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="kpi-title">
+              Activités
+            </div>
+
+            <div
+              class="kpi-value"
+              id="kpiActivities"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>
+            Dernières ventes
+          </h3>
+
+          <div
+            id="dashboardSales"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>
+            Dernières activités
+          </h3>
+
+          <div
+            id="dashboardActivities"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           VENTES
+      ========================= -->
+
+      <section
+        id="page-sales"
+        class="page"
+      >
+
+        <div class="page-header">
+
+          <div>
+            <h2>Ventes</h2>
+            <p>Gestion des ventes de l'entreprise</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            onclick="showForm('salesForm')"
+          >
+            + Nouvelle vente
+          </button>
+
+        </div>
+
+
+        <div
+          id="salesForm"
+          class="section hidden"
+        >
+
+          <h3>Ajouter une vente</h3>
+
+          <form id="salesAddForm">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label>Date</label>
+                <input
+                  type="date"
+                  id="saleDate"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Client</label>
+                <input
+                  type="text"
+                  id="saleClient"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Produit</label>
+                <input
+                  type="text"
+                  id="saleProduct"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Catégorie</label>
+                <input
+                  type="text"
+                  id="saleCategory"
+                  value="Produit"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Montant</label>
+                <input
+                  type="number"
+                  id="saleAmount"
+                  min="0"
+                  step="0.01"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Statut</label>
+
+                <select id="saleStatus">
+
+                  <option value="Payée">
+                    Payée
+                  </option>
+
+                  <option value="En attente">
+                    En attente
+                  </option>
+
+                  <option value="Annulée">
+                    Annulée
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div class="form-group full">
+
+                <label>Notes</label>
+
+                <textarea
+                  id="saleNotes"
+                  placeholder="Notes facultatives"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                type="submit"
+                class="btn btn-success"
+              >
+                Enregistrer
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="hideForm('salesForm')"
+              >
+                Annuler
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>Liste des ventes</h3>
+
+          <div
+            id="salesTable"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           ACHATS
+      ========================= -->
+
+      <section
+        id="page-purchases"
+        class="page"
+      >
+
+        <div class="page-header">
+
+          <div>
+            <h2>Achats</h2>
+            <p>Gestion des achats et fournisseurs</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            onclick="showForm('purchasesForm')"
+          >
+            + Nouvel achat
+          </button>
+
+        </div>
+
+
+        <div
+          id="purchasesForm"
+          class="section hidden"
+        >
+
+          <h3>Ajouter un achat</h3>
+
+          <form id="purchasesAddForm">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label>Date</label>
+                <input
+                  type="date"
+                  id="purchaseDate"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Fournisseur</label>
+                <input
+                  type="text"
+                  id="purchaseSupplier"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Article</label>
+                <input
+                  type="text"
+                  id="purchaseItem"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Catégorie</label>
+                <input
+                  type="text"
+                  id="purchaseCategory"
+                  value="Autre"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Montant</label>
+                <input
+                  type="number"
+                  id="purchaseAmount"
+                  min="0"
+                  step="0.01"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+
+                <label>Statut</label>
+
+                <select id="purchaseStatus">
+
+                  <option value="Payé">
+                    Payé
+                  </option>
+
+                  <option value="À payer">
+                    À payer
+                  </option>
+
+                  <option value="Annulé">
+                    Annulé
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div class="form-group full">
+
+                <label>Notes</label>
+
+                <textarea
+                  id="purchaseNotes"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                type="submit"
+                class="btn btn-success"
+              >
+                Enregistrer
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="hideForm('purchasesForm')"
+              >
+                Annuler
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>Liste des achats</h3>
+
+          <div
+            id="purchasesTable"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           INNOVATION
+      ========================= -->
+
+      <section
+        id="page-innovation"
+        class="page"
+      >
+
+        <div class="page-header">
+
+          <div>
+            <h2>Innovation</h2>
+            <p>Suivi des projets d'innovation</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            onclick="showForm('innovationForm')"
+          >
+            + Nouveau projet
+          </button>
+
+        </div>
+
+
+        <div
+          id="innovationForm"
+          class="section hidden"
+        >
+
+          <h3>Ajouter un projet</h3>
+
+          <form id="innovationAddForm">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label>Projet</label>
+                <input
+                  type="text"
+                  id="innovationProject"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label>Responsable</label>
+                <input
+                  type="text"
+                  id="innovationOwner"
+                  required
+                >
+              </div>
+
+              <div class="form-group full">
+                <label>Objectif</label>
+
+                <textarea
+                  id="innovationObjective"
+                  required
+                ></textarea>
+
+              </div>
+
+              <div class="form-group">
+                <label>Progression (%)</label>
+
+                <input
+                  type="number"
+                  id="innovationProgress"
+                  min="0"
+                  max="100"
+                  value="0"
+                  required
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Date prévue</label>
+
+                <input
+                  type="date"
+                  id="innovationDate"
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Statut</label>
+
+                <select id="innovationStatus">
+
+                  <option value="Planifié">
+                    Planifié
+                  </option>
+
+                  <option value="En cours">
+                    En cours
+                  </option>
+
+                  <option value="Terminé">
+                    Terminé
+                  </option>
+
+                  <option value="Bloqué">
+                    Bloqué
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Commentaire</label>
+
+                <input
+                  type="text"
+                  id="innovationComment"
+                >
+
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                type="submit"
+                class="btn btn-success"
+              >
+                Enregistrer
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="hideForm('innovationForm')"
+              >
+                Annuler
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>Projets d'innovation</h3>
+
+          <div
+            id="innovationTable"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           ACTIVITÉS
+      ========================= -->
+
+      <section
+        id="page-activities"
+        class="page"
+      >
+
+        <div class="page-header">
+
+          <div>
+            <h2>Activités</h2>
+            <p>Planification et suivi des activités</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            onclick="showForm('activitiesForm')"
+          >
+            + Nouvelle activité
+          </button>
+
+        </div>
+
+
+        <div
+          id="activitiesForm"
+          class="section hidden"
+        >
+
+          <h3>Ajouter une activité</h3>
+
+          <form id="activitiesAddForm">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label>Nom</label>
+
+                <input
+                  type="text"
+                  id="activityName"
+                  required
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Responsable</label>
+
+                <input
+                  type="text"
+                  id="activityOwner"
+                  required
+                >
+
+              </div>
+
+              <div class="form-group full">
+
+                <label>Objectif</label>
+
+                <textarea
+                  id="activityObjective"
+                  required
+                ></textarea>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Progression (%)</label>
+
+                <input
+                  type="number"
+                  id="activityProgress"
+                  min="0"
+                  max="100"
+                  value="0"
+                  required
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Date limite</label>
+
+                <input
+                  type="date"
+                  id="activityDueDate"
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Priorité</label>
+
+                <select id="activityPriority">
+
+                  <option value="Normale">
+                    Normale
+                  </option>
+
+                  <option value="Haute">
+                    Haute
+                  </option>
+
+                  <option value="Urgente">
+                    Urgente
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Statut</label>
+
+                <select id="activityStatus">
+
+                  <option value="Planifiée">
+                    Planifiée
+                  </option>
+
+                  <option value="En cours">
+                    En cours
+                  </option>
+
+                  <option value="Terminée">
+                    Terminée
+                  </option>
+
+                  <option value="En retard">
+                    En retard
+                  </option>
+
+                  <option value="Bloquée">
+                    Bloquée
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div class="form-group full">
+
+                <label>Commentaire</label>
+
+                <textarea
+                  id="activityComment"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                type="submit"
+                class="btn btn-success"
+              >
+                Enregistrer
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="hideForm('activitiesForm')"
+              >
+                Annuler
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>Liste des activités</h3>
+
+          <div
+            id="activitiesTable"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           RAPPORTS
+      ========================= -->
+
+      <section
+        id="page-reports"
+        class="page"
+      >
+
+        <div class="page-header">
+
+          <div>
+
+            <h2>Rapports</h2>
+
+            <p>
+              Synthèse des données de l'entreprise
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="cards">
+
+          <div class="card">
+
+            <div class="kpi-title">
+              Total ventes
+            </div>
+
+            <div
+              class="kpi-value"
+              id="reportSales"
+            >
+              0 FCFA
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="kpi-title">
+              Total achats
+            </div>
+
+            <div
+              class="kpi-value"
+              id="reportPurchases"
+            >
+              0 FCFA
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="kpi-title">
+              Solde
+            </div>
+
+            <div
+              class="kpi-value"
+              id="reportBalance"
+            >
+              0 FCFA
+            </div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="kpi-title">
+              Nombre de ventes
+            </div>
+
+            <div
+              class="kpi-value"
+              id="reportSaleCount"
+            >
+              0
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>
+            Résumé des ventes
+          </h3>
+
+          <div
+            id="reportSalesTable"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>
+            Résumé des achats
+          </h3>
+
+          <div
+            id="reportPurchasesTable"
+            class="table-wrap"
+          ></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           PARAMÈTRES
+      ========================= -->
+
+      <section
+        id="page-settings"
+        class="page"
+      >
+
+        <div class="page-header">
+
+          <div>
+
+            <h2>Paramètres</h2>
+
+            <p>
+              Configuration de Luc Brico-Tech
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="section">
+
+          <h3>
+            Paramètres de l'entreprise
+          </h3>
+
+
+          <form id="settingsForm">
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label>
+                  Nom de l'entreprise
+                </label>
+
+                <input
+                  type="text"
+                  id="companyName"
+                  value="Luc Brico-Tech"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Devise
+                </label>
+
+                <input
+                  type="text"
+                  id="currency"
+                  value="FCFA"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Objectif mensuel des ventes
+                </label>
+
+                <input
+                  type="number"
+                  id="monthlyTarget"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="submit"
+              class="btn btn-success"
+            >
+              Enregistrer les paramètres
+            </button>
+
+          </form>
+
+          <div id="settingsMessage"></div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
 </div>
-<div class="grid">
-<div class="panel"><h3>Évolution mensuelle des ventes</h3><div class="chart" id="chart"></div></div>
-<div class="panel"><h3>Alertes de gestion</h3><div id="alerts" class="empty">Aucune alerte.</div></div>
-</div>
-</section>
 
-<section id="sales" class="page">
-<div class="panel"><h3>Enregistrer une vente</h3><form onsubmit="addSale(event)">
-<label>Date<input id="sdate" type="date" required></label>
-<label>Client<input id="sclient" required placeholder="Nom du client"></label>
-<label>Produit / service<input id="sproduct" required></label>
-<label>Montant (FCFA)<input id="samount" type="number" min="0" required></label>
-<label>Catégorie<select id="scat"><option>Produit</option><option>Service</option><option>Installation</option><option>Maintenance</option></select></label>
-<label>Statut<select id="sstatus"><option>Payée</option><option>En attente</option></select></label>
-<div class="full actions"><button class="btn primary">Ajouter la vente</button></div></form></div>
-<div class="panel"><h3>Historique des ventes</h3><div class="filters"><input id="salesSearch" placeholder="Rechercher..." oninput="renderSales()"></div><div id="salesTable"></div></div>
-</section>
 
-<section id="purchases" class="page">
-<div class="panel"><h3>Enregistrer un achat</h3><form onsubmit="addPurchase(event)">
-<label>Date<input id="pdate" type="date" required></label>
-<label>Fournisseur<input id="psupplier" required></label>
-<label>Article / service<input id="pitem" required></label>
-<label>Montant (FCFA)<input id="pamount" type="number" min="0" required></label>
-<label>Catégorie<select id="pcat"><option>Matière première</option><option>Matériel</option><option>Service</option><option>Transport</option><option>Autre</option></select></label>
-<label>Statut<select id="pstatus"><option>Payé</option><option>À payer</option></select></label>
-<div class="full actions"><button class="btn primary">Ajouter l'achat</button></div></form></div>
-<div class="panel"><h3>Historique des achats</h3><div id="purchaseTable"></div></div>
-</section>
-
-<section id="innovation" class="page">
-<div class="panel"><h3>Suivi des projets d'innovation</h3><form onsubmit="addInnovation(event)">
-<label>Projet<input id="iproject" required placeholder="Nom du projet"></label>
-<label>Responsable<input id="iowner" required></label>
-<label>Objectif<input id="igoal" required></label>
-<label>Progression (%)<input id="iprogress" type="number" min="0" max="100" required></label>
-<label>Date prévue<input id="idate" type="date"></label>
-<label>Statut<select id="istatus"><option>En cours</option><option>Planifié</option><option>Terminé</option><option>Bloqué</option></select></label>
-<div class="full"><label>Commentaire<textarea id="icomment"></textarea></label></div>
-<div class="full actions"><button class="btn primary">Ajouter le projet</button></div></form></div>
-<div class="panel"><h3>Portefeuille d'innovation</h3><div id="innovationTable"></div></div>
-</section>
-
-<section id="activities" class="page">
-<div class="panel"><h3>Planification et suivi des activités</h3><form onsubmit="addActivity(event)">
-<label>Activité<input id="aname" required></label>
-<label>Responsable<input id="aowner" required></label>
-<label>Objectif<input id="aobjective" required></label>
-<label>Progression (%)<input id="aprogress" type="number" min="0" max="100" required></label>
-<label>Échéance<input id="adate" type="date"></label>
-<label>Priorité<select id="apriority"><option>Normale</option><option>Haute</option><option>Urgente</option></select></label>
-<div class="full"><label>Commentaire<textarea id="acomment"></textarea></label></div>
-<div class="full actions"><button class="btn primary">Ajouter l'activité</button></div></form></div>
-<div class="panel"><h3>Activités de l'entreprise</h3><div id="activityTable"></div></div>
-</section>
-
-<section id="reports" class="page">
-<div class="panel"><h3>Rapport de performance</h3><div id="report"></div><button class="btn primary" onclick="window.print()">Imprimer / PDF</button></div>
-</section>
-
-<section id="settings" class="page">
-<div class="panel"><h3>Paramètres de l'entreprise</h3><form onsubmit="saveSettings(event)">
-<label>Nom de l'entreprise<input id="company" value="Luc Brico-Tech"></label>
-<label>Objectif mensuel de ventes (FCFA)<input id="target" type="number" min="0"></label>
-<label>Devise<input id="currency" value="FCFA"></label>
-<div class="full actions"><button class="btn primary">Enregistrer les paramètres</button></div>
-</form></div>
-<div class="panel"><h3>Gestion des données</h3><button class="btn light" onclick="backup()">Sauvegarder JSON</button> <button class="btn danger" onclick="clearData()">Effacer toutes les données</button></div>
-</section>
-</main>
-</div>
 
 <script>
-const key='lbt_pro_v2';
-let db=JSON.parse(localStorage.getItem(key)||'{"sales":[],"purchases":[],"innovation":[],"activities":[],"settings":{"company":"Luc Brico-Tech","target":0,"currency":"FCFA"}}');
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(key,JSON.stringify(db));updateAll()}
-function money(n){return new Intl.NumberFormat('fr-FR').format(Math.round(n||0))+' '+(db.settings.currency||'FCFA')}
-function today(){return new Date().toISOString().slice(0,10)}
-$('today').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-['sdate','pdate','idate','adate'].forEach(id=>{if($(id))$(id).value=today()});
-function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const titles={dashboard:'Tableau de bord',sales:'Gestion des ventes',purchases:'Gestion des achats',innovation:'Innovation',activities:'Activités',reports:'Rapports',settings:'Paramètres'};$('pageTitle').textContent=titles[id]}
-function addSale(e){e.preventDefault();db.sales.push({id:Date.now(),date:$('sdate').value,client:$('sclient').value,product:$('sproduct').value,amount:+$('samount').value,cat:$('scat').value,status:$('sstatus').value});e.target.reset();$('sdate').value=today();save()}
-function addPurchase(e){e.preventDefault();db.purchases.push({id:Date.now(),date:$('pdate').value,supplier:$('psupplier').value,item:$('pitem').value,amount:+$('pamount').value,cat:$('pcat').value,status:$('pstatus').value});e.target.reset();$('pdate').value=today();save()}
-function addInnovation(e){e.preventDefault();db.innovation.push({id:Date.now(),project:$('iproject').value,owner:$('iowner').value,goal:$('igoal').value,progress:+$('iprogress').value,date:$('idate').value,status:$('istatus').value,comment:$('icomment').value});e.target.reset();$('idate').value=today();save()}
-function addActivity(e){e.preventDefault();db.activities.push({id:Date.now(),name:$('aname').value,owner:$('aowner').value,objective:$('aobjective').value,progress:+$('aprogress').value,date:$('adate').value,priority:$('apriority').value,comment:$('acomment').value});e.target.reset();$('adate').value=today();save()}
-function del(type,id){db[type]=db[type].filter(x=>x.id!==id);save()}
-function renderSales(){let q=($('salesSearch')?.value||'').toLowerCase();let a=db.sales.filter(x=>(x.client+' '+x.product).toLowerCase().includes(q));$('salesTable').innerHTML=a.length?`<table><tr><th>Date</th><th>Client</th><th>Produit/service</th><th>Montant</th><th>Statut</th><th></th></tr>${a.map(x=>`<tr><td>${x.date}</td><td>${x.client}</td><td>${x.product}</td><td><b>${money(x.amount)}</b></td><td><span class="badge ${x.status==='Payée'?'done':'pending'}">${x.status}</span></td><td><button class="btn danger" onclick="del('sales',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucune vente enregistrée.</div>'}
-function renderPurchases(){$('purchaseTable').innerHTML=db.purchases.length?`<table><tr><th>Date</th><th>Fournisseur</th><th>Article/service</th><th>Montant</th><th>Statut</th><th></th></tr>${db.purchases.map(x=>`<tr><td>${x.date}</td><td>${x.supplier}</td><td>${x.item}</td><td><b>${money(x.amount)}</b></td><td><span class="badge ${x.status==='Payé'?'done':'pending'}">${x.status}</span></td><td><button class="btn danger" onclick="del('purchases',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucun achat enregistré.</div>'}
-function renderInnovation(){$('innovationTable').innerHTML=db.innovation.length?`<table><tr><th>Projet</th><th>Responsable</th><th>Objectif</th><th>Progression</th><th>Statut</th><th></th></tr>${db.innovation.map(x=>`<tr><td><b>${x.project}</b></td><td>${x.owner}</td><td>${x.goal}</td><td><div class="progress"><i style="width:${x.progress}%"></i></div>${x.progress}%</td><td>${x.status}</td><td><button class="btn danger" onclick="del('innovation',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucun projet.</div>'}
-function renderActivities(){$('activityTable').innerHTML=db.activities.length?`<table><tr><th>Activité</th><th>Responsable</th><th>Échéance</th><th>Progression</th><th>Priorité</th><th></th></tr>${db.activities.map(x=>`<tr><td><b>${x.name}</b><br><small>${x.objective}</small></td><td>${x.owner}</td><td>${x.date||'-'}</td><td><div class="progress"><i style="width:${x.progress}%"></i></div>${x.progress}%</td><td>${x.priority}</td><td><button class="btn danger" onclick="del('activities',${x.id})">Suppr.</button></td></tr>`).join('')}</table>`:'<div class="empty">Aucune activité.</div>'}
-function updateAll(){
- let ca=db.sales.reduce((s,x)=>s+x.amount,0),ach=db.purchases.reduce((s,x)=>s+x.amount,0),target=+db.settings.target||0;
- let sr=target?Math.min(ca/target*100,100):0, ir=db.innovation.length?db.innovation.reduce((s,x)=>s+x.progress,0)/db.innovation.length:0, ar=db.activities.length?db.activities.reduce((s,x)=>s+x.progress,0)/db.activities.length:0;
- let global=(sr+ir+ar)/3;
- $('kca').textContent=money(ca);$('kach').textContent=money(ach);$('kres').textContent=money(ca-ach);$('kglobal').textContent=Math.round(global)+'%';$('ktarget').textContent=money(target);$('ksalesrate').textContent=Math.round(sr)+'%';$('kinnovation').textContent=Math.round(ir)+'%';$('kactivity').textContent=Math.round(ar)+'%';
- renderSales();renderPurchases();renderInnovation();renderActivities();renderReport();renderChart();renderAlerts();
+
+/* =====================================================
+   CONFIGURATION SUPABASE
+===================================================== */
+
+/*
+  ⚠️ REMPLACE UNIQUEMENT LES DEUX VALEURS CI-DESSOUS.
+
+  1. SUPABASE_URL = ton Project URL
+  2. SUPABASE_KEY = ta Publishable API Key
+
+  ⚠️ NE METS PAS LA SECRET API KEY ICI.
+*/
+
+const SUPABASE_URL =
+"https://uypnbbweblrzbwrduyii.supabase.co
+
+const SUPABASE_KEY =
+"sb_publishable_k3LvgCqni5_xD6ThMuXN8w_3WYksfOP";
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+const { createClient } =
+window.supabase;
+
+const supabaseClient =
+createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+let currentUser = null;
+let currentProfile = null;
+let currency = "FCFA";
+
+
+/* =====================================================
+   OUTILS
+===================================================== */
+
+function escapeHtml(value) {
+
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
-function renderChart(){let months=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'],vals=months.map((_,i)=>db.sales.filter(x=>new Date(x.date).getMonth()===i).reduce((s,x)=>s+x.amount,0)),max=Math.max(...vals,1);$('chart').innerHTML=months.map((m,i)=>`<div class="bar-wrap"><div class="bar-value">${vals[i]?Math.round(vals[i]/1000)+'k':''}</div><div class="bar" style="height:${Math.max(vals[i]/max*85,2)}%"></div><div class="bar-label">${m}</div></div>`).join('')}
-function renderAlerts(){let alerts=[];if(db.settings.target&&!db.sales.length)alerts.push('Aucune vente enregistrée pour le moment.');db.activities.filter(x=>x.date&&x.progress<100&&x.date<today()).forEach(x=>alerts.push('Échéance dépassée : '+x.name));db.innovation.filter(x=>x.status==='Bloqué').forEach(x=>alerts.push('Projet bloqué : '+x.project));$('alerts').innerHTML=alerts.length?alerts.map(a=>`<div class="card" style="margin-bottom:8px">${a}</div>`).join(''):'Aucune alerte.'}
-function renderReport(){let ca=db.sales.reduce((s,x)=>s+x.amount,0),ach=db.purchases.reduce((s,x)=>s+x.amount,0);$('report').innerHTML=`<table><tr><th>Indicateur</th><th>Valeur</th></tr><tr><td>Chiffre d'affaires</td><td><b>${money(ca)}</b></td></tr><tr><td>Total achats</td><td>${money(ach)}</td></tr><tr><td>Résultat brut simplifié</td><td>${money(ca-ach)}</td></tr><tr><td>Nombre de ventes</td><td>${db.sales.length}</td></tr><tr><td>Nombre d'achats</td><td>${db.purchases.length}</td></tr><tr><td>Projets d'innovation</td><td>${db.innovation.length}</td></tr><tr><td>Activités suivies</td><td>${db.activities.length}</td></tr></table>`}
-function saveSettings(e){e.preventDefault();db.settings.company=$('company').value;db.settings.target=+$('target').value||0;db.settings.currency=$('currency').value||'FCFA';save();alert('Paramètres enregistrés.')}
-function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='luc-brico-tech-sauvegarde.json';a.click()}
-function clearData(){if(confirm('Effacer toutes les données ?')){localStorage.removeItem(key);location.reload()}}
-function exportCSV(){let rows=[['Type','Date','Tiers','Désignation','Montant','Statut']];db.sales.forEach(x=>rows.push(['Vente',x.date,x.client,x.product,x.amount,x.status]));db.purchases.forEach(x=>rows.push(['Achat',x.date,x.supplier,x.item,x.amount,x.status]));let csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='luc-brico-tech-donnees.csv';a.click()}
-$('target').value=db.settings.target;
-updateAll();
+
+
+function money(value) {
+
+  const number =
+    Number(value || 0);
+
+  return new Intl.NumberFormat(
+    "fr-FR"
+  ).format(number)
+  + " "
+  + currency;
+}
+
+
+function showForm(id) {
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+    element.classList.remove("hidden");
+  }
+}
+
+
+function hideForm(id) {
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+    element.classList.add("hidden");
+  }
+}
+
+
+function today() {
+
+  return new Date()
+    .toISOString()
+    .split("T")[0];
+
+}
+
+
+function statusClass(status) {
+
+  if (
+    status === "Payée" ||
+    status === "Payé" ||
+    status === "Terminée"
+  ) {
+    return "status status-green";
+  }
+
+  if (
+    status === "En attente" ||
+    status === "À payer" ||
+    status === "En cours" ||
+    status === "Planifiée"
+  ) {
+    return "status status-orange";
+  }
+
+  if (
+    status === "Annulée" ||
+    status === "Annulé" ||
+    status === "Bloqué" ||
+    status === "Bloquée" ||
+    status === "En retard"
+  ) {
+    return "status status-red";
+  }
+
+  return "status status-blue";
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showLoginMessage(
+  message,
+  type = "error"
+) {
+
+  const element =
+    document.getElementById(
+      "loginMessage"
+    );
+
+  element.innerHTML =
+    `<div class="message ${type}">
+      ${escapeHtml(message)}
+    </div>`;
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+document
+  .getElementById("loginForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+      showLoginMessage(
+        "Connexion en cours...",
+        "success"
+      );
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth
+          .signInWithPassword({
+            email,
+            password
+          });
+
+      if (error) {
+
+        showLoginMessage(
+          error.message
+        );
+
+        return;
+      }
+
+      currentUser =
+        data.user;
+
+      await loadUserProfile();
+
+    }
+  );
+
+
+/* =====================================================
+   CHARGEMENT DU PROFIL
+===================================================== */
+
+async function loadUserProfile() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", currentUser.id)
+      .single();
+
+
+  if (error) {
+
+    showLoginMessage(
+      "Profil utilisateur introuvable. Vérifie que le profil existe dans Supabase."
+    );
+
+    await supabaseClient.auth.signOut();
+
+    return;
+  }
+
+
+  currentProfile =
+    data;
+
+
+  currency =
+    "FCFA";
+
+
+  document
+    .getElementById("loginScreen")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("app")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("userName")
+    .textContent =
+      currentProfile.full_name ||
+      currentUser.email;
+
+
+  const isAdmin =
+    currentProfile.role === "admin";
+
+
+  document
+    .getElementById("userRole")
+    .textContent =
+      isAdmin
+        ? "Président"
+        : "Employé";
+
+
+  document
+    .querySelectorAll(".admin-only")
+    .forEach(
+      element => {
+
+        if (isAdmin) {
+
+          element.classList.remove(
+            "hidden"
+          );
+
+        } else {
+
+          element.classList.add(
+            "hidden"
+          );
+
+        }
+
+      }
+    );
+
+
+  setDefaultDates();
+
+  await loadSettings();
+
+  await refreshAll();
+
+}
+
+
+/* =====================================================
+   DATES PAR DÉFAUT
+===================================================== */
+
+function setDefaultDates() {
+
+  document
+    .getElementById("saleDate")
+    .value =
+      today();
+
+  document
+    .getElementById("purchaseDate")
+    .value =
+      today();
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const page =
+            button.dataset.page;
+
+
+          if (
+            (page === "reports" ||
+             page === "settings") &&
+            currentProfile?.role !== "admin"
+          ) {
+
+            return;
+
+          }
+
+
+          document
+            .querySelectorAll(".nav-btn")
+            .forEach(
+              btn =>
+                btn.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          document
+            .querySelectorAll(".page")
+            .forEach(
+              section =>
+                section.classList.remove(
+                  "active"
+                )
+            );
+
+
+          const target =
+            document.getElementById(
+              "page-" + page
+            );
+
+
+          if (target) {
+
+            target.classList.add(
+              "active"
+            );
+
+          }
+
+
+          refreshAll();
+
+        }
+      );
+
+    }
+  );
+
+
+/* =====================================================
+   VENTES
+===================================================== */
+
+document
+  .getElementById("salesAddForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const record = {
+
+        user_id:
+          currentUser.id,
+
+        sale_date:
+          document
+            .getElementById("saleDate")
+            .value,
+
+        client:
+          document
+            .getElementById("saleClient")
+            .value
+            .trim(),
+
+        product:
+          document
+            .getElementById("saleProduct")
+            .value
+            .trim(),
+
+        category:
+          document
+            .getElementById("saleCategory")
+            .value
+            .trim(),
+
+        amount:
+          Number(
+            document
+              .getElementById("saleAmount")
+              .value
+          ),
+
+        status:
+          document
+            .getElementById("saleStatus")
+            .value,
+
+        notes:
+          document
+            .getElementById("saleNotes")
+            .value
+            .trim()
+
+      };
+
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("sales")
+          .insert(record);
+
+
+      if (error) {
+
+        alert(
+          "Erreur : " +
+          error.message
+        );
+
+        return;
+      }
+
+
+      event.target.reset();
+
+      setDefaultDates();
+
+      hideForm("salesForm");
+
+      await refreshAll();
+
+    }
+  );
+
+
+async function loadSales() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("sales")
+      .select("*")
+      .order(
+        "sale_date",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    document
+      .getElementById("salesTable")
+      .innerHTML =
+        `<div class="empty">
+          Erreur de chargement des ventes.
+        </div>`;
+
+    return [];
+
+  }
+
+
+  const rows =
+    data || [];
+
+
+  if (!rows.length) {
+
+    document
+      .getElementById("salesTable")
+      .innerHTML =
+        `<div class="empty">
+          Aucune vente enregistrée.
+        </div>`;
+
+    return rows;
+
+  }
+
+
+  let html = `
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Produit</th>
+          <th>Catégorie</th>
+          <th>Montant</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  rows.forEach(row => {
+
+    html += `
+      <tr>
+
+        <td>
+          ${escapeHtml(row.sale_date)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.client)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.product)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.category)}
+        </td>
+
+        <td>
+          ${money(row.amount)}
+        </td>
+
+        <td>
+          <span class="${statusClass(row.status)}">
+            ${escapeHtml(row.status)}
+          </span>
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteSale('${row.id}')"
+          >
+            Supprimer
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  });
+
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  document
+    .getElementById("salesTable")
+    .innerHTML =
+      html;
+
+
+  return rows;
+
+}
+
+
+async function deleteSale(id) {
+
+  if (
+    !confirm(
+      "Voulez-vous supprimer cette vente ?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("sales")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    alert(
+      "Erreur : " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  await refreshAll();
+
+}
+
+
+/* =====================================================
+   ACHATS
+===================================================== */
+
+document
+  .getElementById("purchasesAddForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const record = {
+
+        user_id:
+          currentUser.id,
+
+        purchase_date:
+          document
+            .getElementById("purchaseDate")
+            .value,
+
+        supplier:
+          document
+            .getElementById("purchaseSupplier")
+            .value
+            .trim(),
+
+        item:
+          document
+            .getElementById("purchaseItem")
+            .value
+            .trim(),
+
+        category:
+          document
+            .getElementById("purchaseCategory")
+            .value
+            .trim(),
+
+        amount:
+          Number(
+            document
+              .getElementById("purchaseAmount")
+              .value
+          ),
+
+        status:
+          document
+            .getElementById("purchaseStatus")
+            .value,
+
+        notes:
+          document
+            .getElementById("purchaseNotes")
+            .value
+            .trim()
+
+      };
+
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("purchases")
+          .insert(record);
+
+
+      if (error) {
+
+        alert(
+          "Erreur : " +
+          error.message
+        );
+
+        return;
+      }
+
+
+      event.target.reset();
+
+      document
+        .getElementById("purchaseDate")
+        .value =
+          today();
+
+      hideForm(
+        "purchasesForm"
+      );
+
+      await refreshAll();
+
+    }
+  );
+
+
+async function loadPurchases() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("purchases")
+      .select("*")
+      .order(
+        "purchase_date",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    document
+      .getElementById("purchasesTable")
+      .innerHTML =
+        `<div class="empty">
+          Erreur de chargement des achats.
+        </div>`;
+
+    return [];
+
+  }
+
+
+  const rows =
+    data || [];
+
+
+  if (!rows.length) {
+
+    document
+      .getElementById("purchasesTable")
+      .innerHTML =
+        `<div class="empty">
+          Aucun achat enregistré.
+        </div>`;
+
+    return rows;
+
+  }
+
+
+  let html = `
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Date</th>
+          <th>Fournisseur</th>
+          <th>Article</th>
+          <th>Catégorie</th>
+          <th>Montant</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  rows.forEach(row => {
+
+    html += `
+      <tr>
+
+        <td>
+          ${escapeHtml(row.purchase_date)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.supplier)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.item)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.category)}
+        </td>
+
+        <td>
+          ${money(row.amount)}
+        </td>
+
+        <td>
+          <span class="${statusClass(row.status)}">
+            ${escapeHtml(row.status)}
+          </span>
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-danger"
+            onclick="deletePurchase('${row.id}')"
+          >
+            Supprimer
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  });
+
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  document
+    .getElementById("purchasesTable")
+    .innerHTML =
+      html;
+
+
+  return rows;
+
+}
+
+
+async function deletePurchase(id) {
+
+  if (
+    !confirm(
+      "Voulez-vous supprimer cet achat ?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("purchases")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    alert(
+      "Erreur : " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  await refreshAll();
+
+}
+
+
+/* =====================================================
+   INNOVATION
+===================================================== */
+
+document
+  .getElementById("innovationAddForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const record = {
+
+        user_id:
+          currentUser.id,
+
+        project:
+          document
+            .getElementById(
+              "innovationProject"
+            )
+            .value
+            .trim(),
+
+        owner:
+          document
+            .getElementById(
+              "innovationOwner"
+            )
+            .value
+            .trim(),
+
+        objective:
+          document
+            .getElementById(
+              "innovationObjective"
+            )
+            .value
+            .trim(),
+
+        progress:
+          Number(
+            document
+              .getElementById(
+                "innovationProgress"
+              )
+              .value
+          ),
+
+        planned_date:
+          document
+            .getElementById(
+              "innovationDate"
+            )
+            .value ||
+          null,
+
+        status:
+          document
+            .getElementById(
+              "innovationStatus"
+            )
+            .value,
+
+        comment:
+          document
+            .getElementById(
+              "innovationComment"
+            )
+            .value
+            .trim()
+
+      };
+
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from(
+            "innovation_projects"
+          )
+          .insert(record);
+
+
+      if (error) {
+
+        alert(
+          "Erreur : " +
+          error.message
+        );
+
+        return;
+      }
+
+
+      event.target.reset();
+
+      hideForm(
+        "innovationForm"
+      );
+
+      await refreshAll();
+
+    }
+  );
+
+
+async function loadInnovation() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "innovation_projects"
+      )
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    document
+      .getElementById(
+        "innovationTable"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Erreur de chargement des projets.
+        </div>`;
+
+    return [];
+
+  }
+
+
+  const rows =
+    data || [];
+
+
+  if (!rows.length) {
+
+    document
+      .getElementById(
+        "innovationTable"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Aucun projet d'innovation.
+        </div>`;
+
+    return rows;
+
+  }
+
+
+  let html = `
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Projet</th>
+          <th>Responsable</th>
+          <th>Objectif</th>
+          <th>Progression</th>
+          <th>Date</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  rows.forEach(row => {
+
+    html += `
+      <tr>
+
+        <td>
+          ${escapeHtml(row.project)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.owner)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.objective)}
+        </td>
+
+        <td>
+
+          ${row.progress}%
+
+          <div class="progress">
+
+            <div
+              class="progress-bar"
+              style="width:${row.progress}%"
+            ></div>
+
+          </div>
+
+        </td>
+
+        <td>
+          ${escapeHtml(row.planned_date || "-")}
+        </td>
+
+        <td>
+
+          <span class="${statusClass(row.status)}">
+            ${escapeHtml(row.status)}
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteInnovation('${row.id}')"
+          >
+            Supprimer
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  });
+
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  document
+    .getElementById(
+      "innovationTable"
+    )
+    .innerHTML =
+      html;
+
+
+  return rows;
+
+}
+
+
+async function deleteInnovation(id) {
+
+  if (
+    !confirm(
+      "Voulez-vous supprimer ce projet ?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "innovation_projects"
+      )
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    alert(
+      "Erreur : " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  await refreshAll();
+
+}
+
+
+/* =====================================================
+   ACTIVITÉS
+===================================================== */
+
+document
+  .getElementById("activitiesAddForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const record = {
+
+        user_id:
+          currentUser.id,
+
+        name:
+          document
+            .getElementById(
+              "activityName"
+            )
+            .value
+            .trim(),
+
+        owner:
+          document
+            .getElementById(
+              "activityOwner"
+            )
+            .value
+            .trim(),
+
+        objective:
+          document
+            .getElementById(
+              "activityObjective"
+            )
+            .value
+            .trim(),
+
+        progress:
+          Number(
+            document
+              .getElementById(
+                "activityProgress"
+              )
+              .value
+          ),
+
+        due_date:
+          document
+            .getElementById(
+              "activityDueDate"
+            )
+            .value ||
+          null,
+
+        priority:
+          document
+            .getElementById(
+              "activityPriority"
+            )
+            .value,
+
+        status:
+          document
+            .getElementById(
+              "activityStatus"
+            )
+            .value,
+
+        comment:
+          document
+            .getElementById(
+              "activityComment"
+            )
+            .value
+            .trim()
+
+      };
+
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("activities")
+          .insert(record);
+
+
+      if (error) {
+
+        alert(
+          "Erreur : " +
+          error.message
+        );
+
+        return;
+      }
+
+
+      event.target.reset();
+
+      hideForm(
+        "activitiesForm"
+      );
+
+      await refreshAll();
+
+    }
+  );
+
+
+async function loadActivities() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("activities")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    document
+      .getElementById(
+        "activitiesTable"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Erreur de chargement des activités.
+        </div>`;
+
+    return [];
+
+  }
+
+
+  const rows =
+    data || [];
+
+
+  if (!rows.length) {
+
+    document
+      .getElementById(
+        "activitiesTable"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Aucune activité enregistrée.
+        </div>`;
+
+    return rows;
+
+  }
+
+
+  let html = `
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Nom</th>
+          <th>Responsable</th>
+          <th>Objectif</th>
+          <th>Progression</th>
+          <th>Date limite</th>
+          <th>Priorité</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  rows.forEach(row => {
+
+    html += `
+      <tr>
+
+        <td>
+          ${escapeHtml(row.name)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.owner)}
+        </td>
+
+        <td>
+          ${escapeHtml(row.objective)}
+        </td>
+
+        <td>
+
+          ${row.progress}%
+
+          <div class="progress">
+
+            <div
+              class="progress-bar"
+              style="width:${row.progress}%"
+            ></div>
+
+          </div>
+
+        </td>
+
+        <td>
+          ${escapeHtml(row.due_date || "-")}
+        </td>
+
+        <td>
+          ${escapeHtml(row.priority)}
+        </td>
+
+        <td>
+
+          <span class="${statusClass(row.status)}">
+            ${escapeHtml(row.status)}
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteActivity('${row.id}')"
+          >
+            Supprimer
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  });
+
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  document
+    .getElementById(
+      "activitiesTable"
+    )
+    .innerHTML =
+      html;
+
+
+  return rows;
+
+}
+
+
+async function deleteActivity(id) {
+
+  if (
+    !confirm(
+      "Voulez-vous supprimer cette activité ?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("activities")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    alert(
+      "Erreur : " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  await refreshAll();
+
+}
+
+
+/* =====================================================
+   PARAMÈTRES
+===================================================== */
+
+async function loadSettings() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !== "admin"
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("settings")
+      .select("*")
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+
+  if (error) {
+    return;
+  }
+
+
+  if (!data) {
+    return;
+  }
+
+
+  document
+    .getElementById(
+      "companyName"
+    )
+    .value =
+      data.company_name ||
+      "Luc Brico-Tech";
+
+
+  document
+    .getElementById(
+      "currency"
+    )
+    .value =
+      data.currency ||
+      "FCFA";
+
+
+  document
+    .getElementById(
+      "monthlyTarget"
+    )
+    .value =
+      data.monthly_sales_target ||
+      0;
+
+
+  currency =
+    data.currency ||
+    "FCFA";
+
+}
+
+
+document
+  .getElementById("settingsForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      if (
+        currentProfile?.role !== "admin"
+      ) {
+
+        return;
+
+      }
+
+
+      const record = {
+
+        user_id:
+          currentUser.id,
+
+        company_name:
+          document
+            .getElementById(
+              "companyName"
+            )
+            .value
+            .trim(),
+
+        monthly_sales_target:
+          Number(
+            document
+              .getElementById(
+                "monthlyTarget"
+              )
+              .value
+          ),
+
+        currency:
+          document
+            .getElementById(
+              "currency"
+            )
+            .value
+            .trim(),
+
+        updated_at:
+          new Date().toISOString()
+
+      };
+
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from("settings")
+          .upsert(
+            record,
+            {
+              onConflict:
+                "user_id"
+            }
+          );
+
+
+      const message =
+        document
+          .getElementById(
+            "settingsMessage"
+          );
+
+
+      if (error) {
+
+        message.innerHTML =
+          `<div class="message error">
+            ${escapeHtml(error.message)}
+          </div>`;
+
+        return;
+      }
+
+
+      currency =
+        record.currency;
+
+
+      message.innerHTML =
+        `<div class="message success">
+          Paramètres enregistrés.
+        </div>`;
+
+
+      await refreshAll();
+
+    }
+  );
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+async function loadDashboard() {
+
+  const [
+    salesResult,
+    purchasesResult,
+    innovationResult,
+    activitiesResult
+  ] =
+    await Promise.all([
+
+      supabaseClient
+        .from("sales")
+        .select("*"),
+
+      supabaseClient
+        .from("purchases")
+        .select("*"),
+
+      supabaseClient
+        .from("innovation_projects")
+        .select("*"),
+
+      supabaseClient
+        .from("activities")
+        .select("*")
+
+    ]);
+
+
+  const sales =
+    salesResult.data || [];
+
+  const purchases =
+    purchasesResult.data || [];
+
+  const innovation =
+    innovationResult.data || [];
+
+  const activities =
+    activitiesResult.data || [];
+
+
+  const totalSales =
+    sales
+      .filter(
+        row =>
+          row.status !== "Annulée"
+      )
+      .reduce(
+        (sum, row) =>
+          sum + Number(row.amount || 0),
+        0
+      );
+
+
+  const totalPurchases =
+    purchases
+      .filter(
+        row =>
+          row.status !== "Annulé"
+      )
+      .reduce(
+        (sum, row) =>
+          sum + Number(row.amount || 0),
+        0
+      );
+
+
+  document
+    .getElementById("kpiSales")
+    .textContent =
+      money(totalSales);
+
+
+  document
+    .getElementById("kpiPurchases")
+    .textContent =
+      money(totalPurchases);
+
+
+  document
+    .getElementById("kpiInnovation")
+    .textContent =
+      innovation.length;
+
+
+  document
+    .getElementById("kpiActivities")
+    .textContent =
+      activities.length;
+
+
+  /* dernières ventes */
+
+  const recentSales =
+    [...sales]
+      .sort(
+        (a,b) =>
+          new Date(b.sale_date) -
+          new Date(a.sale_date)
+      )
+      .slice(0,5);
+
+
+  if (!recentSales.length) {
+
+    document
+      .getElementById(
+        "dashboardSales"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Aucune vente.
+        </div>`;
+
+  } else {
+
+    let html = `
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Produit</th>
+            <th>Montant</th>
+            <th>Statut</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    recentSales.forEach(
+      row => {
+
+        html += `
+          <tr>
+
+            <td>
+              ${escapeHtml(row.sale_date)}
+            </td>
+
+            <td>
+              ${escapeHtml(row.client)}
+            </td>
+
+            <td>
+              ${escapeHtml(row.product)}
+            </td>
+
+            <td>
+              ${money(row.amount)}
+            </td>
+
+            <td>
+              <span class="${statusClass(row.status)}">
+                ${escapeHtml(row.status)}
+              </span>
+            </td>
+
+          </tr>
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+
+    document
+      .getElementById(
+        "dashboardSales"
+      )
+      .innerHTML =
+        html;
+
+  }
+
+
+  /* dernières activités */
+
+  const recentActivities =
+    [...activities]
+      .sort(
+        (a,b) =>
+          new Date(b.created_at) -
+          new Date(a.created_at)
+      )
+      .slice(0,5);
+
+
+  if (!recentActivities.length) {
+
+    document
+      .getElementById(
+        "dashboardActivities"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Aucune activité.
+        </div>`;
+
+  } else {
+
+    let html = `
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Activité</th>
+            <th>Responsable</th>
+            <th>Progression</th>
+            <th>Statut</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    recentActivities.forEach(
+      row => {
+
+        html += `
+          <tr>
+
+            <td>
+              ${escapeHtml(row.name)}
+            </td>
+
+            <td>
+              ${escapeHtml(row.owner)}
+            </td>
+
+            <td>
+              ${row.progress}%
+            </td>
+
+            <td>
+              <span class="${statusClass(row.status)}">
+                ${escapeHtml(row.status)}
+              </span>
+            </td>
+
+          </tr>
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+
+    document
+      .getElementById(
+        "dashboardActivities"
+      )
+      .innerHTML =
+        html;
+
+  }
+
+
+  /* RAPPORTS */
+
+  document
+    .getElementById(
+      "reportSales"
+    )
+    .textContent =
+      money(totalSales);
+
+
+  document
+    .getElementById(
+      "reportPurchases"
+    )
+    .textContent =
+      money(totalPurchases);
+
+
+  document
+    .getElementById(
+      "reportBalance"
+    )
+    .textContent =
+      money(
+        totalSales -
+        totalPurchases
+      );
+
+
+  document
+    .getElementById(
+      "reportSaleCount"
+    )
+    .textContent =
+      sales.length;
+
+
+  loadReportSales(
+    sales
+  );
+
+  loadReportPurchases(
+    purchases
+  );
+
+}
+
+
+/* =====================================================
+   RAPPORT VENTES
+===================================================== */
+
+function loadReportSales(rows) {
+
+  if (!rows.length) {
+
+    document
+      .getElementById(
+        "reportSalesTable"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Aucune donnée.
+        </div>`;
+
+    return;
+
+  }
+
+
+  let html = `
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Produit</th>
+          <th>Montant</th>
+          <th>Statut</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  rows.forEach(
+    row => {
+
+      html += `
+        <tr>
+
+          <td>
+            ${escapeHtml(row.sale_date)}
+          </td>
+
+          <td>
+            ${escapeHtml(row.client)}
+          </td>
+
+          <td>
+            ${escapeHtml(row.product)}
+          </td>
+
+          <td>
+            ${money(row.amount)}
+          </td>
+
+          <td>
+            <span class="${statusClass(row.status)}">
+              ${escapeHtml(row.status)}
+            </span>
+          </td>
+
+        </tr>
+      `;
+
+    }
+  );
+
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  document
+    .getElementById(
+      "reportSalesTable"
+    )
+    .innerHTML =
+      html;
+
+}
+
+
+/* =====================================================
+   RAPPORT ACHATS
+===================================================== */
+
+function loadReportPurchases(rows) {
+
+  if (!rows.length) {
+
+    document
+      .getElementById(
+        "reportPurchasesTable"
+      )
+      .innerHTML =
+        `<div class="empty">
+          Aucune donnée.
+        </div>`;
+
+    return;
+
+  }
+
+
+  let html = `
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Date</th>
+          <th>Fournisseur</th>
+          <th>Article</th>
+          <th>Montant</th>
+          <th>Statut</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  rows.forEach(
+    row => {
+
+      html += `
+        <tr>
+
+          <td>
+            ${escapeHtml(row.purchase_date)}
+          </td>
+
+          <td>
+            ${escapeHtml(row.supplier)}
+          </td>
+
+          <td>
+            ${escapeHtml(row.item)}
+          </td>
+
+          <td>
+            ${money(row.amount)}
+          </td>
+
+          <td>
+            <span class="${statusClass(row.status)}">
+              ${escapeHtml(row.status)}
+            </span>
+          </td>
+
+        </tr>
+      `;
+
+    }
+  );
+
+
+  html += `
+      </tbody>
+    </table>
+  `;
+
+
+  document
+    .getElementById(
+      "reportPurchasesTable"
+    )
+    .innerHTML =
+      html;
+
+}
+
+
+/* =====================================================
+   ACTUALISATION GÉNÉRALE
+===================================================== */
+
+async function refreshAll() {
+
+  if (!currentUser) {
+    return;
+  }
+
+
+  await Promise.all([
+
+    loadSales(),
+
+    loadPurchases(),
+
+    loadInnovation(),
+
+    loadActivities(),
+
+    loadDashboard()
+
+  ]);
+
+}
+
+
+/* =====================================================
+   DÉCONNEXION
+===================================================== */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async function() {
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+      currentUser =
+        null;
+
+      currentProfile =
+        null;
+
+
+      document
+        .getElementById("app")
+        .classList.add("hidden");
+
+
+      document
+        .getElementById("loginScreen")
+        .classList.remove("hidden");
+
+
+      document
+        .getElementById("loginForm")
+        .reset();
+
+    }
+  );
+
+
+/* =====================================================
+   SESSION EXISTANTE
+===================================================== */
+
+async function checkSession() {
+
+  const {
+    data
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (
+    data &&
+    data.session &&
+    data.session.user
+  ) {
+
+    currentUser =
+      data.session.user;
+
+    await loadUserProfile();
+
+  }
+
+}
+
+
+/* =====================================================
+   DÉMARRAGE
+===================================================== */
+
+checkSession();
+
 </script>
+
 </body>
 </html>
