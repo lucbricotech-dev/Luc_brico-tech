@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[25/09, 13:00] Lucien Hemianon Noukoun Bessan: <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -1647,7 +1647,8 @@
 */
 
 const SUPABASE_URL =
-"https://uypnbbweblrzbwrduyii.supabase.co";
+"https://uypnbbweblrzbwrduyii.supabase.co
+
 const SUPABASE_KEY =
 "sb_publishable_k3LvgCqni5_xD6ThMuXN8w_3WYksfOP";
 
@@ -3975,6 +3976,4045 @@ async function checkSession() {
 ===================================================== */
 
 checkSession();
+
+</script>
+
+</body>
+</html>
+[25/09, 13:32] Lucien Hemianon Noukoun Bessan: <!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luc Brico-Tech</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --primary:#123b5d;
+  --secondary:#1e6f9f;
+  --accent:#f39c12;
+  --bg:#f4f7fa;
+  --card:#fff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --success:#159957;
+  --danger:#c0392b;
+  --border:#e5e7eb
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+
+button,input,select,textarea{
+  font:inherit
+}
+
+button{
+  cursor:pointer
+}
+
+/* =========================
+   CONNEXION
+========================= */
+
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary))
+}
+
+.login-card{
+  width:min(430px,100%);
+  background:#fff;
+  border-radius:16px;
+  padding:32px;
+  box-shadow:0 18px 50px #0004
+}
+
+.login-logo{
+  text-align:center;
+  color:var(--primary);
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:6px
+}
+
+.login-sub{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:25px
+}
+
+.login-card label{
+  display:block;
+  margin:14px 0 6px;
+  font-weight:700
+}
+
+.login-card input{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:8px
+}
+
+.login-card button{
+  width:100%;
+  margin-top:20px;
+  padding:12px;
+  border:0;
+  border-radius:8px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700
+}
+
+.login-error{
+  margin-top:12px;
+  color:var(--danger);
+  font-size:14px;
+  text-align:center;
+  min-height:18px
+}
+
+/* =========================
+   APPLICATION
+========================= */
+
+.app{
+  display:none
+}
+
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:250px;
+  background:var(--primary);
+  color:#fff;
+  padding:22px 16px;
+  z-index:5
+}
+
+.logo{
+  font-size:23px;
+  font-weight:800;
+  padding:8px 10px 24px
+}
+
+.nav button{
+  display:block;
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#fff;
+  text-align:left;
+  padding:13px 12px;
+  border-radius:8px;
+  margin:3px 0;
+  font-size:15px
+}
+
+.nav button:hover,
+.nav button.active{
+  background:#ffffff18
+}
+
+.main{
+  margin-left:250px;
+  padding:24px
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:20px
+}
+
+.topbar h1{
+  margin:0;
+  color:var(--primary);
+  font-size:27px
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap
+}
+
+.date{
+  color:var(--muted);
+  font-size:14px
+}
+
+.btn{
+  border:0;
+  border-radius:7px;
+  padding:10px 14px;
+  font-weight:700
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:#fff
+}
+
+.btn-accent{
+  background:var(--accent);
+  color:#fff
+}
+
+.btn-danger{
+  background:var(--danger);
+  color:#fff
+}
+
+.btn-light{
+  background:#eef2f5;
+  color:var(--text)
+}
+
+.user-badge{
+  background:#eaf1f6;
+  color:var(--primary);
+  padding:9px 11px;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:700
+}
+
+.page{
+  display:none
+}
+
+.page.active{
+  display:block
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:18px
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:17px
+}
+
+.card .label{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:8px
+}
+
+.card .value{
+  font-size:24px;
+  font-weight:800;
+  color:var(--primary)
+}
+
+.card small{
+  color:var(--muted)
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:16px
+}
+
+.panel{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+  margin-bottom:16px
+}
+
+.panel h2{
+  margin:0 0 15px;
+  color:var(--primary);
+  font-size:18px
+}
+
+/* =========================
+   FORMULAIRES
+========================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px
+}
+
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:5px
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:#fff
+}
+
+.field textarea{
+  min-height:80px;
+  resize:vertical
+}
+
+.full{
+  grid-column:1/-1
+}
+
+.form-actions{
+  margin-top:14px;
+  display:flex;
+  gap:8px
+}
+
+/* =========================
+   TABLEAUX
+========================= */
+
+.table-wrap{
+  overflow:auto
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px
+}
+
+.table th,
+.table td{
+  padding:10px 8px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  white-space:nowrap
+}
+
+.table th{
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase
+}
+
+.search{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  margin-bottom:12px
+}
+
+.progress{
+  height:8px;
+  background:#e9edf0;
+  border-radius:20px;
+  overflow:hidden;
+  min-width:100px
+}
+
+.progress>span{
+  display:block;
+  height:100%;
+  background:var(--secondary)
+}
+
+.status{
+  padding:4px 7px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:700;
+  background:#eef2f5
+}
+
+.status.success{
+  background:#e7f6ed;
+  color:var(--success)
+}
+
+.status.danger{
+  background:#fdecea;
+  color:var(--danger)
+}
+
+.alert{
+  padding:10px 12px;
+  border-radius:7px;
+  background:#fff8e8;
+  border-left:4px solid var(--accent);
+  margin-bottom:8px;
+  font-size:14px
+}
+
+.empty{
+  color:var(--muted);
+  padding:18px;
+  text-align:center
+}
+
+.settings-grid{
+  max-width:700px
+}
+
+.hidden{
+  display:none!important
+}
+
+.footer-note{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .cards{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .grid2{
+    grid-template-columns:1fr
+  }
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    position:static;
+    width:100%;
+    height:auto
+  }
+
+  .nav{
+    display:flex;
+    overflow:auto
+  }
+
+  .nav button{
+    min-width:max-content
+  }
+
+  .main{
+    margin-left:0;
+    padding:15px
+  }
+
+  .topbar{
+    align-items:flex-start;
+    flex-direction:column
+  }
+
+  .cards{
+    grid-template-columns:1fr
+  }
+
+  .form-grid{
+    grid-template-columns:1fr
+  }
+
+  .full{
+    grid-column:auto
+  }
+}
+
+@media print{
+
+  .sidebar,
+  .top-actions,
+  .form-panel,
+  .no-print{
+    display:none!important
+  }
+
+  .main{
+    margin:0;
+    padding:0
+  }
+
+  .panel{
+    border:0
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     ÉCRAN DE CONNEXION
+===================================================== -->
+
+<div id="loginScreen" class="login-screen">
+
+  <div class="login-card">
+
+    <div class="login-logo">
+      Luc Brico-Tech
+    </div>
+
+    <div class="login-sub">
+      Connexion à votre espace de gestion
+    </div>
+
+    <form id="loginForm">
+
+      <label for="loginEmail">
+        Adresse e-mail
+      </label>
+
+      <input
+        id="loginEmail"
+        type="email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="loginPassword">
+        Mot de passe
+      </label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit">
+        Se connecter
+      </button>
+
+      <div id="loginError" class="login-error"></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<div id="app" class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      Luc Brico-Tech
+    </div>
+
+    <nav class="nav">
+
+      <button
+        data-page="dashboard"
+        class="active"
+      >
+        ▦ Tableau de bord
+      </button>
+
+      <button data-page="sales">
+        ▤ Ventes
+      </button>
+
+      <button data-page="purchases">
+        ▥ Achats
+      </button>
+
+      <button data-page="innovation">
+        ◆ Innovation
+      </button>
+
+      <button data-page="activities">
+        ✓ Activités
+      </button>
+
+      <button
+        data-page="reports"
+        id="reportsNav"
+      >
+        ◫ Rapports
+      </button>
+
+      <button
+        data-page="settings"
+        id="settingsNav"
+      >
+        ⚙ Paramètres
+      </button>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- CONTENU PRINCIPAL -->
+
+  <main class="main">
+
+    <div class="topbar">
+
+      <div>
+
+        <h1 id="pageTitle">
+          Tableau de bord
+        </h1>
+
+        <div
+          class="date"
+          id="today"
+        ></div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <span
+          id="userBadge"
+          class="user-badge"
+        ></span>
+
+        <button
+          class="btn btn-accent"
+          onclick="exportCSV()"
+        >
+          Exporter les données
+        </button>
+
+        <button
+          class="btn btn-light"
+          onclick="logout()"
+        >
+          Déconnexion
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TABLEAU DE BORD
+    ================================================= -->
+
+    <section
+      id="page-dashboard"
+      class="page active"
+    >
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="label">
+            Chiffre d'affaires
+          </div>
+
+          <div
+            class="value"
+            id="kpiSales"
+          >
+            0 FCFA
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Achats
+          </div>
+
+          <div
+            class="value"
+            id="kpiPurchases"
+          >
+            0 FCFA
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Résultat brut simplifié
+          </div>
+
+          <div
+            class="value"
+            id="kpiResult"
+          >
+            0 FCFA
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Taux global d'activité
+          </div>
+
+          <div
+            class="value"
+            id="kpiActivity"
+          >
+            0%
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Objectif ventes
+          </div>
+
+          <div
+            class="value"
+            id="kpiTarget"
+          >
+            0 FCFA
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Taux réalisation ventes
+          </div>
+
+          <div
+            class="value"
+            id="kpiTargetRate"
+          >
+            0%
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Innovation
+          </div>
+
+          <div
+            class="value"
+            id="kpiInnovation"
+          >
+            0%
+          </div>
+        </div>
+
+
+        <div class="card">
+          <div class="label">
+            Activités
+          </div>
+
+          <div
+            class="value"
+            id="kpiActivities"
+          >
+            0%
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="grid2">
+
+        <div class="panel">
+
+          <h2>
+            Évolution mensuelle des ventes
+          </h2>
+
+          <div id="salesChart"></div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <h2>
+            Alertes de gestion
+          </h2>
+
+          <div id="alerts"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         VENTES
+    ================================================= -->
+
+    <section
+      id="page-sales"
+      class="page"
+    >
+
+      <div class="panel form-panel">
+
+        <h2>
+          Nouvelle vente
+        </h2>
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label>
+              Date
+            </label>
+
+            <input
+              id="saleDate"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Client
+            </label>
+
+            <input
+              id="saleClient"
+              placeholder="Nom du client"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Produit / service
+            </label>
+
+            <input
+              id="saleProduct"
+              placeholder="Produit ou service"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Montant
+            </label>
+
+            <input
+              id="saleAmount"
+              type="number"
+              min="0"
+              step="0.01"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Catégorie
+            </label>
+
+            <input
+              id="saleCategory"
+              value="Produit"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Statut
+            </label>
+
+            <select id="saleStatus">
+
+              <option>
+                Payée
+              </option>
+
+              <option>
+                En attente
+              </option>
+
+              <option>
+                Annulée
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="addSale()"
+          >
+            Enregistrer
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <h2>
+          Historique des ventes
+        </h2>
+
+        <input
+          id="salesSearch"
+          class="search"
+          placeholder="Rechercher une vente..."
+          oninput="renderSales()"
+        >
+
+        <div class="table-wrap">
+
+          <table class="table">
+
+            <thead>
+
+              <tr>
+
+                <th>Date</th>
+                <th>Client</th>
+                <th>Produit</th>
+                <th>Catégorie</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="salesBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ACHATS
+    ================================================= -->
+
+    <section
+      id="page-purchases"
+      class="page"
+    >
+
+      <div class="panel form-panel">
+
+        <h2>
+          Nouvel achat
+        </h2>
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label>
+              Date
+            </label>
+
+            <input
+              id="purchaseDate"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Fournisseur
+            </label>
+
+            <input
+              id="purchaseSupplier"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Article / service
+            </label>
+
+            <input
+              id="purchaseItem"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Montant
+            </label>
+
+            <input
+              id="purchaseAmount"
+              type="number"
+              min="0"
+              step="0.01"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Catégorie
+            </label>
+
+            <input
+              id="purchaseCategory"
+              value="Autre"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Statut
+            </label>
+
+            <select id="purchaseStatus">
+
+              <option>
+                Payé
+              </option>
+
+              <option>
+                À payer
+              </option>
+
+              <option>
+                Annulé
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="addPurchase()"
+          >
+            Enregistrer
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <h2>
+          Historique des achats
+        </h2>
+
+        <input
+          id="purchasesSearch"
+          class="search"
+          placeholder="Rechercher un achat..."
+          oninput="renderPurchases()"
+        >
+
+        <div class="table-wrap">
+
+          <table class="table">
+
+            <thead>
+
+              <tr>
+
+                <th>Date</th>
+                <th>Fournisseur</th>
+                <th>Article</th>
+                <th>Catégorie</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="purchasesBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         INNOVATION
+    ================================================= -->
+
+    <section
+      id="page-innovation"
+      class="page"
+    >
+
+      <div class="panel form-panel">
+
+        <h2>
+          Nouveau projet d'innovation
+        </h2>
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label>
+              Projet
+            </label>
+
+            <input
+              id="innovationProject"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Responsable
+            </label>
+
+            <input
+              id="innovationOwner"
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Objectif
+            </label>
+
+            <textarea
+              id="innovationObjective"
+            ></textarea>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Progression (%)
+            </label>
+
+            <input
+              id="innovationProgress"
+              type="number"
+              min="0"
+              max="100"
+              value="0"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Date prévue
+            </label>
+
+            <input
+              id="innovationDate"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Statut
+            </label>
+
+            <select id="innovationStatus">
+
+              <option>
+                Planifié
+              </option>
+
+              <option selected>
+                En cours
+              </option>
+
+              <option>
+                Terminé
+              </option>
+
+              <option>
+                Bloqué
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Commentaire
+            </label>
+
+            <input
+              id="innovationComment"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="addInnovation()"
+          >
+            Enregistrer
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <h2>
+          Projets d'innovation
+        </h2>
+
+        <div class="table-wrap">
+
+          <table class="table">
+
+            <thead>
+
+              <tr>
+
+                <th>Projet</th>
+                <th>Responsable</th>
+                <th>Objectif</th>
+                <th>Progression</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="innovationBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ACTIVITÉS
+    ================================================= -->
+
+    <section
+      id="page-activities"
+      class="page"
+    >
+
+      <div class="panel form-panel">
+
+        <h2>
+          Nouvelle activité
+        </h2>
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label>
+              Nom
+            </label>
+
+            <input
+              id="activityName"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Responsable
+            </label>
+
+            <input
+              id="activityOwner"
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Objectif
+            </label>
+
+            <textarea
+              id="activityObjective"
+            ></textarea>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Progression (%)
+            </label>
+
+            <input
+              id="activityProgress"
+              type="number"
+              min="0"
+              max="100"
+              value="0"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Date limite
+            </label>
+
+            <input
+              id="activityDue"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Priorité
+            </label>
+
+            <select id="activityPriority">
+
+              <option>
+                Normale
+              </option>
+
+              <option>
+                Haute
+              </option>
+
+              <option>
+                Urgente
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Commentaire
+            </label>
+
+            <input
+              id="activityComment"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="addActivity()"
+          >
+            Enregistrer
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <h2>
+          Liste des activités
+        </h2>
+
+        <div class="table-wrap">
+
+          <table class="table">
+
+            <thead>
+
+              <tr>
+
+                <th>Nom</th>
+                <th>Responsable</th>
+                <th>Objectif</th>
+                <th>Progression</th>
+                <th>Date limite</th>
+                <th>Priorité</th>
+                <th>Statut</th>
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="activitiesBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         RAPPORTS
+    ================================================= -->
+
+    <section
+      id="page-reports"
+      class="page"
+    >
+
+      <div class="panel">
+
+        <h2>
+          Rapport de performance
+        </h2>
+
+        <div
+          id="reportContent"
+        ></div>
+
+        <div class="form-actions no-print">
+
+          <button
+            class="btn btn-primary"
+            onclick="window.print()"
+          >
+            Imprimer / PDF
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PARAMÈTRES
+    ================================================= -->
+
+    <section
+      id="page-settings"
+      class="page"
+    >
+
+      <div class="panel">
+
+        <h2>
+          Paramètres
+        </h2>
+
+        <div class="settings-grid">
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label>
+                Nom de l'entreprise
+              </label>
+
+              <input
+                id="settingCompany"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Objectif mensuel des ventes
+              </label>
+
+              <input
+                id="settingTarget"
+                type="number"
+                min="0"
+                step="0.01"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Devise
+              </label>
+
+              <input
+                id="settingCurrency"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <button
+              class="btn btn-primary"
+              onclick="saveSettings()"
+            >
+              Enregistrer les paramètres
+            </button>
+
+            <button
+              class="btn btn-light"
+              onclick="backup()"
+            >
+              Sauvegarde JSON
+            </button>
+
+            <button
+              class="btn btn-danger"
+              onclick="clearData()"
+            >
+              Effacer les données
+            </button>
+
+          </div>
+
+          <div class="footer-note">
+            Les données sont enregistrées dans Supabase.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CONFIGURATION SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+  "https://uypnbbweblrzbwrduyii.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_k3LvgCqni5_xD6ThMuXN8w_3WYksfOP";
+
+const supabase =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentUser = null;
+let currentProfile = null;
+
+let db = {
+  sales: [],
+  purchases: [],
+  innovation: [],
+  activities: [],
+  settings: {
+    company: "Luc Brico-Tech",
+    target: 0,
+    currency: "FCFA"
+  }
+};
+
+
+/* =====================================================
+   OUTILS
+===================================================== */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function money(value){
+
+  const currency =
+    db.settings.currency || "FCFA";
+
+  return Number(value || 0).toLocaleString(
+    "fr-FR",
+    {
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    }
+  ) + " " + currency;
+}
+
+
+function pct(value){
+
+  let n = Number(value || 0);
+
+  if(n < 0) n = 0;
+  if(n > 100) n = 100;
+
+  return Math.round(n);
+}
+
+
+function esc(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function todayISO(){
+
+  const d = new Date();
+
+  const offset =
+    d.getTimezoneOffset();
+
+  return new Date(
+    d.getTime() - offset * 60000
+  )
+  .toISOString()
+  .slice(0,10);
+}
+
+
+function msg(message){
+
+  alert(message);
+
+}
+
+
+/* =====================================================
+   AFFICHAGE LOGIN
+===================================================== */
+
+function showLogin(){
+
+  $("loginScreen").style.display = "flex";
+
+  $("app").style.display = "none";
+
+}
+
+
+function showApp(){
+
+  $("loginScreen").style.display = "none";
+
+  $("app").style.display = "block";
+
+}
+
+
+/* =====================================================
+   CONNEXION
+===================================================== */
+
+async function login(event){
+
+  event.preventDefault();
+
+  $("loginError").textContent =
+    "Connexion en cours...";
+
+  const email =
+    $("loginEmail").value.trim();
+
+  const password =
+    $("loginPassword").value;
+
+  try{
+
+    const {data,error} =
+      await supabase.auth.signInWithPassword({
+
+        email: email,
+        password: password
+
+      });
+
+    if(error){
+      throw error;
+    }
+
+    currentUser =
+      data.user;
+
+    await initUser();
+
+  }catch(error){
+
+    console.error(error);
+
+    $("loginError").textContent =
+      "Erreur : " + error.message;
+
+  }
+
+}
+
+
+/* =====================================================
+   INITIALISATION UTILISATEUR
+===================================================== */
+
+async function initUser(){
+
+  if(!currentUser){
+
+    showLogin();
+
+    return;
+
+  }
+
+  try{
+
+    const {data:profile,error} =
+      await supabase
+        .from("profiles")
+        .select("id,full_name,role")
+        .eq("id",currentUser.id)
+        .single();
+
+    if(error){
+      throw error;
+    }
+
+    currentProfile =
+      profile;
+
+
+    /* ---------------------------------------------
+       GESTION DU RÔLE
+    --------------------------------------------- */
+
+    const role =
+      String(profile.role || "")
+      .toLowerCase()
+      .trim();
+
+
+    const isAdmin =
+      role === "admin" ||
+      role === "président" ||
+      role === "president";
+
+
+    $("reportsNav").style.display =
+      isAdmin ? "block" : "none";
+
+    $("settingsNav").style.display =
+      isAdmin ? "block" : "none";
+
+
+    $("userBadge").textContent =
+      (profile.full_name || currentUser.email)
+      + " — "
+      + (isAdmin ? "Président" : "Employé");
+
+
+    $("today").textContent =
+      new Date().toLocaleDateString(
+        "fr-FR",
+        {
+          weekday:"long",
+          year:"numeric",
+          month:"long",
+          day:"numeric"
+        }
+      );
+
+
+    $("saleDate").value =
+      todayISO();
+
+    $("purchaseDate").value =
+      todayISO();
+
+
+    await loadData();
+
+    showApp();
+
+    updateAll();
+
+  }catch(error){
+
+    console.error(error);
+
+    $("loginError").textContent =
+      "Impossible de charger votre profil : "
+      + error.message;
+
+    await supabase.auth.signOut();
+
+    showLogin();
+
+  }
+
+}
+
+
+/* =====================================================
+   DÉCONNEXION
+===================================================== */
+
+async function logout(){
+
+  try{
+
+    await supabase.auth.signOut();
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+  currentUser = null;
+  currentProfile = null;
+
+  showLogin();
+
+  $("loginPassword").value = "";
+
+}
+
+
+/* =====================================================
+   CHARGEMENT DES DONNÉES SUPABASE
+===================================================== */
+
+async function loadData(){
+
+  if(!currentUser){
+    return;
+  }
+
+
+  const salesResult =
+    await supabase
+      .from("sales")
+      .select("*")
+      .order("sale_date",{ascending:false});
+
+
+  if(salesResult.error){
+    throw salesResult.error;
+  }
+
+
+  const purchasesResult =
+    await supabase
+      .from("purchases")
+      .select("*")
+      .order("purchase_date",{ascending:false});
+
+
+  if(purchasesResult.error){
+    throw purchasesResult.error;
+  }
+
+
+  const innovationResult =
+    await supabase
+      .from("innovation_projects")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+
+  if(innovationResult.error){
+    throw innovationResult.error;
+  }
+
+
+  const activitiesResult =
+    await supabase
+      .from("activities")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+
+  if(activitiesResult.error){
+    throw activitiesResult.error;
+  }
+
+
+  const settingsResult =
+    await supabase
+      .from("settings")
+      .select("*")
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
+
+
+  if(settingsResult.error){
+    throw settingsResult.error;
+  }
+
+
+  db.sales =
+    salesResult.data || [];
+
+  db.purchases =
+    purchasesResult.data || [];
+
+  db.innovation =
+    innovationResult.data || [];
+
+  db.activities =
+    activitiesResult.data || [];
+
+
+  if(settingsResult.data){
+
+    db.settings = {
+
+      company:
+        settingsResult.data.company_name ||
+        "Luc Brico-Tech",
+
+      target:
+        Number(
+          settingsResult.data.monthly_sales_target || 0
+        ),
+
+      currency:
+        settingsResult.data.currency ||
+        "FCFA"
+
+    };
+
+  }
+
+
+  $("settingCompany").value =
+    db.settings.company;
+
+  $("settingTarget").value =
+    db.settings.target;
+
+  $("settingCurrency").value =
+    db.settings.currency;
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+const pageNames = {
+
+  dashboard:"Tableau de bord",
+  sales:"Ventes",
+  purchases:"Achats",
+  innovation:"Innovation",
+  activities:"Activités",
+  reports:"Rapports",
+  settings:"Paramètres"
+
+};
+
+
+document
+  .querySelectorAll(".nav button")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const page =
+          button.dataset.page;
+
+
+        const isAdmin =
+          currentProfile &&
+          (
+            currentProfile.role === "admin" ||
+            String(currentProfile.role)
+              .toLowerCase()
+              .trim() === "président"
+          );
+
+
+        if(
+          (page === "reports" ||
+           page === "settings") &&
+          !isAdmin
+        ){
+
+          msg(
+            "Cette section est réservée au Président."
+          );
+
+          return;
+
+        }
+
+
+        document
+          .querySelectorAll(".nav button")
+          .forEach(b =>
+            b.classList.remove("active")
+          );
+
+
+        button.classList.add("active");
+
+
+        document
+          .querySelectorAll(".page")
+          .forEach(p =>
+            p.classList.remove("active")
+          );
+
+
+        const target =
+          $("page-" + page);
+
+        if(target){
+
+          target.classList.add("active");
+
+        }
+
+
+        $("pageTitle").textContent =
+          pageNames[page] || page;
+
+
+        if(page === "reports"){
+
+          renderReport();
+
+        }
+
+      }
+    );
+
+  });
+
+
+/* =====================================================
+   AJOUT VENTE
+===================================================== */
+
+async function addSale(){
+
+  if(!currentUser){
+
+    msg("Vous devez être connecté.");
+
+    return;
+
+  }
+
+
+  try{
+
+    const row = {
+
+      user_id:
+        currentUser.id,
+
+      sale_date:
+        $("saleDate").value ||
+        todayISO(),
+
+      client:
+        $("saleClient").value.trim(),
+
+      product:
+        $("saleProduct").value.trim(),
+
+      category:
+        $("saleCategory").value.trim() ||
+        "Produit",
+
+      amount:
+        Number(
+          $("saleAmount").value || 0
+        ),
+
+      status:
+        $("saleStatus").value,
+
+      notes:
+        ""
+
+    };
+
+
+    if(!row.client){
+
+      msg("Renseigne le client.");
+
+      return;
+
+    }
+
+
+    if(!row.product){
+
+      msg("Renseigne le produit ou service.");
+
+      return;
+
+    }
+
+
+    if(row.amount < 0){
+
+      msg("Le montant ne peut pas être négatif.");
+
+      return;
+
+    }
+
+
+    const {error} =
+      await supabase
+        .from("sales")
+        .insert(row);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadData();
+
+    $("saleClient").value = "";
+    $("saleProduct").value = "";
+    $("saleAmount").value = "";
+
+    renderSales();
+
+    updateAll();
+
+    msg("Vente enregistrée avec succès.");
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur lors de l'enregistrement : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AJOUT ACHAT
+===================================================== */
+
+async function addPurchase(){
+
+  if(!currentUser){
+
+    msg("Vous devez être connecté.");
+
+    return;
+
+  }
+
+
+  try{
+
+    const row = {
+
+      user_id:
+        currentUser.id,
+
+      purchase_date:
+        $("purchaseDate").value ||
+        todayISO(),
+
+      supplier:
+        $("purchaseSupplier").value.trim(),
+
+      item:
+        $("purchaseItem").value.trim(),
+
+      category:
+        $("purchaseCategory").value.trim() ||
+        "Autre",
+
+      amount:
+        Number(
+          $("purchaseAmount").value || 0
+        ),
+
+      status:
+        $("purchaseStatus").value,
+
+      notes:
+        ""
+
+    };
+
+
+    if(!row.supplier){
+
+      msg("Renseigne le fournisseur.");
+
+      return;
+
+    }
+
+
+    if(!row.item){
+
+      msg("Renseigne l'article ou service.");
+
+      return;
+
+    }
+
+
+    if(row.amount < 0){
+
+      msg("Le montant ne peut pas être négatif.");
+
+      return;
+
+    }
+
+
+    const {error} =
+      await supabase
+        .from("purchases")
+        .insert(row);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadData();
+
+    $("purchaseSupplier").value = "";
+    $("purchaseItem").value = "";
+    $("purchaseAmount").value = "";
+
+    renderPurchases();
+
+    updateAll();
+
+    msg("Achat enregistré avec succès.");
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur lors de l'enregistrement : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AJOUT INNOVATION
+===================================================== */
+
+async function addInnovation(){
+
+  if(!currentUser){
+
+    msg("Vous devez être connecté.");
+
+    return;
+
+  }
+
+
+  try{
+
+    const row = {
+
+      user_id:
+        currentUser.id,
+
+      project:
+        $("innovationProject")
+          .value.trim(),
+
+      owner:
+        $("innovationOwner")
+          .value.trim(),
+
+      objective:
+        $("innovationObjective")
+          .value.trim(),
+
+      progress:
+        pct(
+          $("innovationProgress")
+            .value
+        ),
+
+      planned_date:
+        $("innovationDate").value ||
+        null,
+
+      status:
+        $("innovationStatus").value,
+
+      comment:
+        $("innovationComment")
+          .value.trim()
+
+    };
+
+
+    if(!row.project){
+
+      msg("Renseigne le projet.");
+
+      return;
+
+    }
+
+
+    if(!row.owner){
+
+      msg("Renseigne le responsable.");
+
+      return;
+
+    }
+
+
+    if(!row.objective){
+
+      msg("Renseigne l’objectif.");
+
+      return;
+
+    }
+
+
+    const {error} =
+      await supabase
+        .from("innovation_projects")
+        .insert(row);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadData();
+
+
+    [
+      "innovationProject",
+      "innovationOwner",
+      "innovationObjective",
+      "innovationComment"
+    ]
+    .forEach(id => {
+
+      $(id).value = "";
+
+    });
+
+
+    $("innovationProgress").value =
+      0;
+
+
+    renderInnovation();
+
+    updateAll();
+
+    msg(
+      "Projet d’innovation enregistré."
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AJOUT ACTIVITÉ
+===================================================== */
+
+async function addActivity(){
+
+  if(!currentUser){
+
+    msg("Vous devez être connecté.");
+
+    return;
+
+  }
+
+
+  try{
+
+    const row = {
+
+      user_id:
+        currentUser.id,
+
+      name:
+        $("activityName")
+          .value.trim(),
+
+      owner:
+        $("activityOwner")
+          .value.trim(),
+
+      objective:
+        $("activityObjective")
+          .value.trim(),
+
+      progress:
+        pct(
+          $("activityProgress")
+            .value
+        ),
+
+      due_date:
+        $("activityDue").value ||
+        null,
+
+      priority:
+        $("activityPriority").value,
+
+      status:
+        "En cours",
+
+      comment:
+        $("activityComment")
+          .value.trim()
+
+    };
+
+
+    if(!row.name){
+
+      msg("Renseigne le nom de l’activité.");
+
+      return;
+
+    }
+
+
+    if(!row.owner){
+
+      msg("Renseigne le responsable.");
+
+      return;
+
+    }
+
+
+    if(!row.objective){
+
+      msg("Renseigne l’objectif.");
+
+      return;
+
+    }
+
+
+    const {error} =
+      await supabase
+        .from("activities")
+        .insert(row);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadData();
+
+
+    [
+      "activityName",
+      "activityOwner",
+      "activityObjective",
+      "activityComment"
+    ]
+    .forEach(id => {
+
+      $(id).value = "";
+
+    });
+
+
+    $("activityProgress").value =
+      0;
+
+
+    renderActivities();
+
+    updateAll();
+
+    msg(
+      "Activité enregistrée."
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SUPPRESSION
+===================================================== */
+
+async function del(table,id){
+
+  if(!confirm(
+    "Supprimer cet élément ?"
+  )){
+    return;
+  }
+
+
+  try{
+
+    const {error} =
+      await supabase
+        .from(table)
+        .delete()
+        .eq("id",id);
+
+
+    if(error){
+      throw error;
+    }
+
+
+    await loadData();
+
+    renderSales();
+    renderPurchases();
+    renderInnovation();
+    renderActivities();
+
+    updateAll();
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AFFICHAGE VENTES
+===================================================== */
+
+function renderSales(){
+
+  const q =
+    (
+      $("salesSearch").value ||
+      ""
+    )
+    .toLowerCase();
+
+
+  const rows =
+    db.sales.filter(x =>
+
+      [
+        x.client,
+        x.product,
+        x.category,
+        x.status
+      ]
+      .join(" ")
+      .toLowerCase()
+      .includes(q)
+
+    );
+
+
+  $("salesBody").innerHTML =
+    rows.length
+
+      ? rows.map(x => `
+
+        <tr>
+
+          <td>
+            ${esc(x.sale_date)}
+          </td>
+
+          <td>
+            ${esc(x.client)}
+          </td>
+
+          <td>
+            ${esc(x.product)}
+          </td>
+
+          <td>
+            ${esc(x.category)}
+          </td>
+
+          <td>
+            ${money(x.amount)}
+          </td>
+
+          <td>
+
+            <span
+              class="status ${
+                x.status === "Payée"
+                  ? "success"
+                  : x.status === "Annulée"
+                    ? "danger"
+                    : ""
+              }"
+            >
+              ${esc(x.status)}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-light"
+              onclick="del('sales','${x.id}')"
+            >
+              Supprimer
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("")
+
+      :
+
+      `
+        <tr>
+          <td
+            colspan="7"
+            class="empty"
+          >
+            Aucune vente.
+          </td>
+        </tr>
+      `;
+
+}
+
+
+/* =====================================================
+   AFFICHAGE ACHATS
+===================================================== */
+
+function renderPurchases(){
+
+  const q =
+    (
+      $("purchasesSearch").value ||
+      ""
+    )
+    .toLowerCase();
+
+
+  const rows =
+    db.purchases.filter(x =>
+
+      [
+        x.supplier,
+        x.item,
+        x.category,
+        x.status
+      ]
+      .join(" ")
+      .toLowerCase()
+      .includes(q)
+
+    );
+
+
+  $("purchasesBody").innerHTML =
+    rows.length
+
+      ? rows.map(x => `
+
+        <tr>
+
+          <td>
+            ${esc(x.purchase_date)}
+          </td>
+
+          <td>
+            ${esc(x.supplier)}
+          </td>
+
+          <td>
+            ${esc(x.item)}
+          </td>
+
+          <td>
+            ${esc(x.category)}
+          </td>
+
+          <td>
+            ${money(x.amount)}
+          </td>
+
+          <td>
+
+            <span
+              class="status ${
+                x.status === "Payé"
+                  ? "success"
+                  : x.status === "Annulé"
+                    ? "danger"
+                    : ""
+              }"
+            >
+              ${esc(x.status)}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-light"
+              onclick="del('purchases','${x.id}')"
+            >
+              Supprimer
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("")
+
+      :
+
+      `
+        <tr>
+          <td
+            colspan="7"
+            class="empty"
+          >
+            Aucun achat.
+          </td>
+        </tr>
+      `;
+
+}
+
+
+/* =====================================================
+   AFFICHAGE INNOVATION
+===================================================== */
+
+function renderInnovation(){
+
+  $("innovationBody").innerHTML =
+
+    db.innovation.length
+
+      ? db.innovation.map(x => `
+
+        <tr>
+
+          <td>
+            ${esc(x.project)}
+          </td>
+
+          <td>
+            ${esc(x.owner)}
+          </td>
+
+          <td>
+            ${esc(x.objective)}
+          </td>
+
+          <td>
+
+            <div class="progress">
+
+              <span
+                style="width:${pct(x.progress)}%"
+              ></span>
+
+            </div>
+
+            <small>
+              ${pct(x.progress)}%
+            </small>
+
+          </td>
+
+          <td>
+            ${esc(x.planned_date || "")}
+          </td>
+
+          <td>
+
+            <span
+              class="status ${
+                x.status === "Terminé"
+                  ? "success"
+                  : x.status === "Bloqué"
+                    ? "danger"
+                    : ""
+              }"
+            >
+              ${esc(x.status)}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-light"
+              onclick="del(
+                'innovation_projects',
+                '${x.id}'
+              )"
+            >
+              Supprimer
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("")
+
+      :
+
+      `
+        <tr>
+          <td
+            colspan="7"
+            class="empty"
+          >
+            Aucun projet.
+          </td>
+        </tr>
+      `;
+
+}
+
+
+/* =====================================================
+   AFFICHAGE ACTIVITÉS
+===================================================== */
+
+function renderActivities(){
+
+  $("activitiesBody").innerHTML =
+
+    db.activities.length
+
+      ? db.activities.map(x => `
+
+        <tr>
+
+          <td>
+            ${esc(x.name)}
+          </td>
+
+          <td>
+            ${esc(x.owner)}
+          </td>
+
+          <td>
+            ${esc(x.objective)}
+          </td>
+
+          <td>
+
+            <div class="progress">
+
+              <span
+                style="width:${pct(x.progress)}%"
+              ></span>
+
+            </div>
+
+            <small>
+              ${pct(x.progress)}%
+            </small>
+
+          </td>
+
+          <td>
+            ${esc(x.due_date || "")}
+          </td>
+
+          <td>
+            ${esc(x.priority)}
+          </td>
+
+          <td>
+
+            <span
+              class="status ${
+                x.status === "Terminée"
+                  ? "success"
+                  : x.status === "Bloquée"
+                    ? "danger"
+                    : ""
+              }"
+            >
+              ${esc(x.status)}
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="btn btn-light"
+              onclick="del(
+                'activities',
+                '${x.id}'
+              )"
+            >
+              Supprimer
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join("")
+
+      :
+
+      `
+        <tr>
+          <td
+            colspan="8"
+            class="empty"
+          >
+            Aucune activité.
+          </td>
+        </tr>
+      `;
+
+}
+
+
+/* =====================================================
+   MISE À JOUR DU DASHBOARD
+===================================================== */
+
+function updateAll(){
+
+  const sales =
+    db.sales.filter(
+      x => x.status !== "Annulée"
+    );
+
+
+  const purchases =
+    db.purchases.filter(
+      x => x.status !== "Annulé"
+    );
+
+
+  const ca =
+    sales.reduce(
+      (total,x) =>
+        total + Number(x.amount || 0),
+      0
+    );
+
+
+  const achats =
+    purchases.reduce(
+      (total,x) =>
+        total + Number(x.amount || 0),
+      0
+    );
+
+
+  $("kpiSales").textContent =
+    money(ca);
+
+
+  $("kpiPurchases").textContent =
+    money(achats);
+
+
+  $("kpiResult").textContent =
+    money(ca - achats);
+
+
+  const activityRate =
+    db.activities.length
+
+      ? db.activities.reduce(
+          (total,x) =>
+            total + pct(x.progress),
+          0
+        )
+        / db.activities.length
+
+      : 0;
+
+
+  const innovationRate =
+    db.innovation.length
+
+      ? db.innovation.reduce(
+          (total,x) =>
+            total + pct(x.progress),
+          0
+        )
+        / db.innovation.length
+
+      : 0;
+
+
+  $("kpiActivity").textContent =
+    Math.round(activityRate) + "%";
+
+
+  $("kpiActivities").textContent =
+    Math.round(activityRate) + "%";
+
+
+  $("kpiInnovation").textContent =
+    Math.round(innovationRate) + "%";
+
+
+  $("kpiTarget").textContent =
+    money(db.settings.target);
+
+
+  $("kpiTargetRate").textContent =
+    db.settings.target
+
+      ? Math.round(
+          ca /
+          db.settings.target *
+          100
+        ) + "%"
+
+      : "0%";
+
+
+  renderSales();
+  renderPurchases();
+  renderInnovation();
+  renderActivities();
+  renderChart();
+  renderAlerts();
+
+
+  if(
+    $("page-reports").classList.contains("active")
+  ){
+
+    renderReport();
+
+  }
+
+}
+
+
+/* =====================================================
+   GRAPHIQUE DES VENTES
+===================================================== */
+
+function renderChart(){
+
+  const months = {};
+
+
+  db.sales
+    .filter(
+      x => x.status !== "Annulée"
+    )
+    .forEach(x => {
+
+      const d =
+        new Date(
+          x.sale_date + "T00:00:00"
+        );
+
+
+      const key =
+        d.toLocaleDateString(
+          "fr-FR",
+          {
+            month:"short",
+            year:"numeric"
+          }
+        );
+
+
+      months[key] =
+        (months[key] || 0)
+        + Number(x.amount || 0);
+
+    });
+
+
+  const entries =
+    Object.entries(months)
+      .slice(-6);
+
+
+  if(!entries.length){
+
+    $("salesChart").innerHTML =
+      `
+        <div class="empty">
+          Pas encore de ventes.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  const max =
+    Math.max(
+      ...entries.map(x => x[1]),
+      1
+    );
+
+
+  $("salesChart").innerHTML =
+
+    entries.map(([month,value]) => `
+
+      <div style="margin:10px 0">
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            font-size:12px
+          "
+        >
+
+          <span>
+            ${esc(month)}
+          </span>
+
+          <b>
+            ${money(value)}
+          </b>
+
+        </div>
+
+
+        <div
+          class="progress"
+          style="height:14px"
+        >
+
+          <span
+            style="
+              width:${value / max * 100}%
+            "
+          ></span>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =====================================================
+   ALERTES
+===================================================== */
+
+function renderAlerts(){
+
+  const alerts = [];
+
+
+  const sales =
+    db.sales
+      .filter(
+        x => x.status !== "Annulée"
+      )
+      .reduce(
+        (total,x) =>
+          total + Number(x.amount || 0),
+        0
+      );
+
+
+  if(
+    db.settings.target &&
+    sales < db.settings.target
+  ){
+
+    alerts.push(
+      "L’objectif mensuel de ventes n’est pas encore atteint."
+    );
+
+  }
+
+
+  if(
+    db.purchases.some(
+      x => x.status === "À payer"
+    )
+  ){
+
+    alerts.push(
+      "Des achats restent à payer."
+    );
+
+  }
+
+
+  if(
+    db.activities.some(
+      x =>
+        x.priority === "Urgente" &&
+        x.status !== "Terminée"
+    )
+  ){
+
+    alerts.push(
+      "Une ou plusieurs activités sont urgentes."
+    );
+
+  }
+
+
+  if(
+    db.innovation.some(
+      x => x.status === "Bloqué"
+    )
+  ){
+
+    alerts.push(
+      "Un projet d’innovation est bloqué."
+    );
+
+  }
+
+
+  $("alerts").innerHTML =
+
+    alerts.length
+
+      ? alerts.map(
+          x =>
+            `<div class="alert">
+              ${esc(x)}
+            </div>`
+        ).join("")
+
+      :
+
+      `
+        <div class="empty">
+          Aucune alerte.
+        </div>
+      `;
+
+}
+
+
+/* =====================================================
+   RAPPORT
+===================================================== */
+
+function renderReport(){
+
+  const ca =
+    db.sales
+      .filter(
+        x => x.status !== "Annulée"
+      )
+      .reduce(
+        (total,x) =>
+          total + Number(x.amount || 0),
+        0
+      );
+
+
+  const achats =
+    db.purchases
+      .filter(
+        x => x.status !== "Annulé"
+      )
+      .reduce(
+        (total,x) =>
+          total + Number(x.amount || 0),
+        0
+      );
+
+
+  $("reportContent").innerHTML = `
+
+    <div class="table-wrap">
+
+      <table class="table">
+
+        <tbody>
+
+          <tr>
+            <th>Indicateur</th>
+            <th>Valeur</th>
+          </tr>
+
+          <tr>
+            <td>
+              Chiffre d'affaires
+            </td>
+
+            <td>
+              ${money(ca)}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Total achats
+            </td>
+
+            <td>
+              ${money(achats)}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Résultat brut simplifié
+            </td>
+
+            <td>
+              ${money(ca - achats)}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Objectif ventes
+            </td>
+
+            <td>
+              ${money(db.settings.target)}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Taux de réalisation
+            </td>
+
+            <td>
+              ${
+                db.settings.target
+                  ? Math.round(
+                      ca /
+                      db.settings.target *
+                      100
+                    )
+                  : 0
+              }%
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Projets innovation
+            </td>
+
+            <td>
+              ${db.innovation.length}
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Activités
+            </td>
+
+            <td>
+              ${db.activities.length}
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   PARAMÈTRES
+===================================================== */
+
+async function saveSettings(){
+
+  if(
+    !currentProfile ||
+    String(currentProfile.role)
+      .toLowerCase()
+      .trim() !== "admin"
+  ){
+
+    msg(
+      "Accès réservé au Président."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const row = {
+
+      user_id:
+        currentUser.id,
+
+      company_name:
+        $("settingCompany")
+          .value.trim()
+        || "Luc Brico-Tech",
+
+      monthly_sales_target:
+        Number(
+          $("settingTarget").value
+          || 0
+        ),
+
+      currency:
+        $("settingCurrency")
+          .value.trim()
+        || "FCFA",
+
+      updated_at:
+        new Date().toISOString()
+
+    };
+
+
+    const {error} =
+      await supabase
+        .from("settings")
+        .upsert(
+          row,
+          {
+            onConflict:"user_id"
+          }
+        );
+
+
+    if(error){
+      throw error;
+    }
+
+
+    db.settings = {
+
+      company:
+        row.company_name,
+
+      target:
+        row.monthly_sales_target,
+
+      currency:
+        row.currency
+
+    };
+
+
+    updateAll();
+
+
+    msg(
+      "Paramètres enregistrés."
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SAUVEGARDE JSON
+===================================================== */
+
+function backup(){
+
+  const data = {
+
+    exported_at:
+      new Date().toISOString(),
+
+    company:
+      db.settings,
+
+    sales:
+      db.sales,
+
+    purchases:
+      db.purchases,
+
+    innovation:
+      db.innovation,
+
+    activities:
+      db.activities
+
+  };
+
+
+  download(
+    "luc-brico-tech-backup.json",
+    JSON.stringify(
+      data,
+      null,
+      2
+    ),
+    "application/json"
+  );
+
+}
+
+
+/* =====================================================
+   SUPPRESSION DES DONNÉES
+===================================================== */
+
+async function clearData(){
+
+  if(
+    !currentProfile ||
+    String(currentProfile.role)
+      .toLowerCase()
+      .trim() !== "admin"
+  ){
+
+    msg(
+      "Accès réservé au Président."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !confirm(
+      "Cette action supprimera vos ventes, achats, projets et activités dans Supabase. Continuer ?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const tables = [
+
+      "sales",
+      "purchases",
+      "innovation_projects",
+      "activities"
+
+    ];
+
+
+    for(
+      const table of tables
+    ){
+
+      const {error} =
+        await supabase
+          .from(table)
+          .delete()
+          .eq(
+            "user_id",
+            currentUser.id
+          );
+
+
+      if(error){
+        throw error;
+      }
+
+    }
+
+
+    await loadData();
+
+    updateAll();
+
+
+    msg(
+      "Vos données ont été supprimées."
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    msg(
+      "Erreur : "
+      + error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   TÉLÉCHARGEMENT
+===================================================== */
+
+function download(
+  name,
+  content,
+  type
+){
+
+  const blob =
+    new Blob(
+      [content],
+      {type:type}
+    );
+
+
+  const url =
+    URL.createObjectURL(blob);
+
+
+  const a =
+    document.createElement("a");
+
+
+  a.href = url;
+
+  a.download = name;
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   EXPORT CSV
+===================================================== */
+
+function exportCSV(){
+
+  const rows = [
+
+    [
+      "Type",
+      "Date",
+      "Tiers",
+      "Article",
+      "Catégorie",
+      "Montant",
+      "Statut"
+    ]
+
+  ];
+
+
+  db.sales.forEach(x => {
+
+    rows.push([
+
+      "Vente",
+      x.sale_date,
+      x.client,
+      x.product,
+      x.category,
+      x.amount,
+      x.status
+
+    ]);
+
+  });
+
+
+  db.purchases.forEach(x => {
+
+    rows.push([
+
+      "Achat",
+      x.purchase_date,
+      x.supplier,
+      x.item,
+      x.category,
+      x.amount,
+      x.status
+
+    ]);
+
+  });
+
+
+  const csv =
+    "\ufeff" +
+    rows
+      .map(
+        row =>
+          row
+            .map(
+              value =>
+                '"' +
+                String(
+                  value ?? ""
+                )
+                .replace(
+                  /"/g,
+                  '""'
+                ) +
+                '"'
+            )
+            .join(";")
+      )
+      .join("\n");
+
+
+  download(
+    "luc-brico-tech-export.csv",
+    csv,
+    "text/csv;charset=utf-8"
+  );
+
+}
+
+
+/* =====================================================
+   FORMULAIRE LOGIN
+===================================================== */
+
+$("loginForm")
+  .addEventListener(
+    "submit",
+    login
+  );
+
+
+/* =====================================================
+   VÉRIFICATION DE SESSION AU DÉMARRAGE
+===================================================== */
+
+(async function(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabase.auth.getSession();
+
+
+    if(error){
+      throw error;
+    }
+
+
+    if(
+      data &&
+      data.session
+    ){
+
+      currentUser =
+        data.session.user;
+
+      await initUser();
+
+    }else{
+
+      showLogin();
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    showLogin();
+
+    $("loginError").textContent =
+      "Impossible de charger la session.";
+
+  }
+
+})();
+
+
+/* =====================================================
+   ÉCOUTE DES CHANGEMENTS DE SESSION
+===================================================== */
+
+supabase.auth.onAuthStateChange(
+  async (event,session) => {
+
+    if(
+      event === "SIGNED_IN" &&
+      session
+    ){
+
+      currentUser =
+        session.user;
+
+    }
+
+
+    if(
+      event === "SIGNED_OUT"
+    ){
+
+      currentUser = null;
+
+      currentProfile = null;
+
+      showLogin();
+
+    }
+
+  }
+);
 
 </script>
 
